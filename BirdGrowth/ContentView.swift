@@ -29,7 +29,7 @@ struct ContentView: View {
     private var iconName: String {
         switch stage {
         case .egg:
-            return "oval.portrait"
+            return "oval.portrait.fill"
         case .chick:
             return "bird"
         case .adult:
