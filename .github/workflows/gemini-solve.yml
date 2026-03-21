@@ -5,8 +5,8 @@ on:
 
 jobs:
   gemini_solve:
-    # コメントが '@gemini-cli' から始まる場合のみ実行
-    if: startsWith(github.event.comment.body, '@gemini-cli')
+    # コメントが '/gemini' から始まる場合のみ実行
+    if: startsWith(github.event.comment.body, '/gemini')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,8 +31,8 @@ jobs:
           COMMENT_BODY="${{ github.event.comment.body }}"
           ISSUE_BODY="${{ github.event.issue.body }}"
           
-          # '@gemini-cli' という文字を除外してプロンプトを作成
-          PROMPT=$(echo "$COMMENT_BODY" | sed 's/^@gemini-cli//g')
+          # '/gemini' という文字を除外してプロンプトを作成
+          PROMPT=$(echo "$COMMENT_BODY" | sed 's|^\/gemini||g')
           
           echo "Geminiに以下の指示でコードを修正させます:"
           echo "$PROMPT"
@@ -56,5 +56,5 @@ jobs:
             > ${{ github.event.comment.body }}
             
             コードの変更点を確認して、問題がなければマージしてください。
-            修正が必要な場合は、Issueで再度 `@gemini-cli` を使って指示を出してください。
+            修正が必要な場合は、Issueで再度 `/gemini` を使って指示を出してください。
           labels: "automated,gemini"
