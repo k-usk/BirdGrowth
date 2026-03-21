@@ -41,7 +41,7 @@ struct ContentView: View {
     private var stageColor: Color {
         switch stage {
         case .egg:
-            return Color.cyan.opacity(0.85)
+            return Color(red: 1.0, green: 0.98, blue: 0.9)
         case .chick:
             return Color.blue.opacity(0.85)
         case .adult:
@@ -72,6 +72,14 @@ struct ContentView: View {
                         .font(.system(size: 120, weight: .regular))
                         .foregroundStyle(stageColor)
                         .accessibilityLabel("成長段階のアイコン")
+                        .shadow(
+                            color: stage == .egg
+                                ? Color.black.opacity(0.18)
+                                : Color.clear,
+                            radius: 12,
+                            x: 0,
+                            y: 16
+                        )
 
                     Text("歩数: \(steps)")
                         .font(.title2)
