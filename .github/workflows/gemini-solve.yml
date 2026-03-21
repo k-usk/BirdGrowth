@@ -1,12 +1,12 @@
-name: Gemini Solve Issue
+name: Gemini CLI Auto Implementation
 on:
   issue_comment:
     types: [created]
 
 jobs:
-  solve:
-    # コメントに「@gemini solve」が含まれている場合のみ実行
-    if: contains(github.event.comment.body, '@gemini solve')
+  gemini_solve:
+    # コメントが '@gemini-cli' から始まる場合のみ実行
+    if: startsWith(github.event.comment.body, '@gemini-cli')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -16,9 +16,45 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Gemini Code Assist Solve
-        # GitHub Appがインストールされていれば、特別なActionを呼ばずとも
-        # API経由で直接命令を送ることができます。
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Gemini CLI
+        run: npm install -g @google/gemini-cli
+
+      - name: Run Gemini CLI for Implementation
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          echo "Gemini is processing the issue..."
-          # ここでGeminiにIssueの内容を送信する処理が走ります
+          COMMENT_BODY="${{ github.event.comment.body }}"
+          ISSUE_BODY="${{ github.event.issue.body }}"
+          
+          # '@gemini-cli' という文字を除外してプロンプトを作成
+          PROMPT=$(echo "$COMMENT_BODY" | sed 's/^@gemini-cli//g')
+          
+          echo "Geminiに以下の指示でコードを修正させます:"
+          echo "$PROMPT"
+          
+          # Geminiに対して「Issueの内容」と「コメントでの追加指示」を渡してファイル書き換えを依頼
+          # ※ CLIのバージョンによって引数が異なる場合は、適宜調整してください
+          gemini -p "このIssueの本来の目的: ${ISSUE_BODY}。今回の指示: ${PROMPT}。この指示に従って、プロジェクトのコードを直接書き換えて実装してください。説明文は不要で、コードの変更だけを行ってください。"
+          
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feat: Geminiによる自動実装 (Issue #${{ github.event.issue.number }})"
+          branch: gemini/issue-${{ github.event.issue.number }}
+          title: "🤖 Gemini自動実装: Issue #${{ github.event.issue.number }}"
+          body: |
+            このプルリクエストは Gemini CLI によって自動生成されました。
+            
+            **対象 Issue**: #${{ github.event.issue.number }}
+            **コメントの指示内容**: 
+            > ${{ github.event.comment.body }}
+            
+            コードの変更点を確認して、問題がなければマージしてください。
+            修正が必要な場合は、Issueで再度 `@gemini-cli` を使って指示を出してください。
+          labels: "automated,gemini"
