@@ -1,0 +1,20 @@
+name: Gemini Solve Issue
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  solve:
+    if: contains(github.event.comment.body, '@gemini solve')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gemini Code Assist
+        uses: google-github-actions/gemini-code-assist-action@v1 # 公式のActionを使用
+        with:
+          api_key: ${{ secrets.GEMINI_API_KEY }}
+          trigger_phrase: "@gemini solve"
