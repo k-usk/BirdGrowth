@@ -91,6 +91,10 @@ jobs:
           
           node run_gemini.js
           
+          # プルリクに不要なファイル（Nodeライブラリやスクリプト本体）が混じらないよう削除
+          rm -rf node_modules package.json package-lock.json run_gemini.js
+
+          
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
