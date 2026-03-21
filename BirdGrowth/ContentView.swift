@@ -74,11 +74,12 @@ struct ContentView: View {
                         .accessibilityLabel("成長段階のアイコン")
                         .shadow(
                             color: stage == .egg
-                                ? Color.black.opacity(0.18)
+                                // 影の不透明度を上げ、半径を小さくして、輪郭を際立たせる
+                                ? Color.black.opacity(0.25) // 不透明度を0.18から0.25に増加
                                 : Color.clear,
-                            radius: 12,
+                            radius: 8, // 半径を12から8に減少
                             x: 0,
-                            y: 16
+                            y: 18 // オフセットyを16から18に増加
                         )
 
                     Text("歩数: \(steps)")
