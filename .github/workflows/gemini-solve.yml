@@ -1,12 +1,16 @@
-name: Gemini CLI Auto Implementation
+name: Gemini Auto Implementation
 on:
   issue_comment:
     types: [created]
 
 jobs:
   gemini_solve:
-    # コメントが '/gemini' から始まる場合のみ実行
-    if: startsWith(github.event.comment.body, '/gemini')
+    # 🚨 【セキュリティ強化】
+    # 「/geminiから始まる」 かつ 「コメントした人がリポジトリの持ち主（あなた）」の場合だけ実行
+    if: >
+      startsWith(github.event.comment.body, '/gemini') && 
+      github.event.comment.user.login == github.repository_owner
+    
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -21,25 +25,71 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Gemini CLI
-        run: npm install -g @google/gemini-cli
+      # 公式のAPI通信ライブラリだけを入れる（1分1回の制限等にひっかからなくなります）
+      - name: Install Google Generative AI SDK
+        run: npm install @google/generative-ai
 
-      - name: Run Gemini CLI for Implementation
+      # 🤖 【確実感UP】迷子にならない自作スクリプトで ContentView.swift を狙い撃ち
+      - name: Run Custom Gemini Script
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
-          COMMENT_BODY="${{ github.event.comment.body }}"
-          ISSUE_BODY="${{ github.event.issue.body }}"
+          cat << 'EOF' > run_gemini.js
+          const fs = require('fs');
+          const { GoogleGenerativeAI } = require('@google/generative-ai');
           
-          # '/gemini' という文字を除外してプロンプトを作成
-          PROMPT=$(echo "$COMMENT_BODY" | sed 's|^\/gemini||g')
+          // 必要な情報を取得
+          const apiKey = process.env.GEMINI_API_KEY;
+          const issueBody = process.env.ISSUE_BODY || "";
+          const commentBody = process.env.COMMENT_BODY || "";
+          const instruction = commentBody.replace(/^\/gemini\s*/i, '');
           
-          echo "Geminiに以下の指示でコードを修正させます:"
-          echo "$PROMPT"
+          // ターゲットのファイルを直接読み込む（迷子防止）
+          const filePath = 'BirdGrowth/ContentView.swift';
+          const fileContent = fs.readFileSync(filePath, 'utf8');
           
-          # Geminiに対して「Issueの内容」と「コメントでの追加指示」を渡してファイル書き換えを依頼
-          # ※ CLIのバージョンによって引数が異なる場合は、適宜調整してください
-          gemini -p "このIssueの本来の目的: ${ISSUE_BODY}。今回の指示: ${PROMPT}。この指示に従って、プロジェクトのコードを直接書き換えて実装してください。説明文は不要で、コードの変更だけを行ってください。"
+          // APIへ渡す指示文（プロンプト）
+          const prompt = `
+          あなたは優秀なiOSエンジニアです。
+          以下のSwiftUIコードを、ユーザーの指示に従って"直接"修正してください。
+          
+          【リクエスト背景（Issueの内容）】
+          ${issueBody}
+          
+          【今回の修正指示】
+          ${instruction}
+          
+          【現在のコード（${filePath}）】
+          \`\`\`swift
+          ${fileContent}
+          \`\`\`
+          
+          出力は必ず修正後の完全なコードのみ（\`\`\`swift 〜 \`\`\` のブロックのみ）にしてください。解説やマークダウン以外の文章は一切不要です。
+          `;
+          
+          async function run() {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            // 高速で安価な標準モデルを指定（これを1回だけ呼ぶのでAPI制限に引っかからなくなります）
+            const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+            
+            console.log("Gemini APIを呼び出し中...");
+            const result = await model.generateContent(prompt);
+            let text = result.response.text();
+            
+            // Markdownの不要なコードブロック記号（```swift や ```）を取り除いて純粋なコードにする
+            text = text.replace(/```swift\n?/i, '').replace(/```\n?/g, '').trim();
+            
+            // 新しい内容で上書き保存
+            fs.writeFileSync(filePath, text);
+            console.log("ファイルの書き換えが完了しました！");
+          }
+          
+          run().catch(console.error);
+          EOF
+          
+          node run_gemini.js
           
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
@@ -49,12 +99,12 @@ jobs:
           branch: gemini/issue-${{ github.event.issue.number }}
           title: "🤖 Gemini自動実装: Issue #${{ github.event.issue.number }}"
           body: |
-            このプルリクエストは Gemini CLI によって自動生成されました。
+            このプルリクエストは Gemini（自作スクリプト）によって自動生成されました。
             
             **対象 Issue**: #${{ github.event.issue.number }}
             **コメントの指示内容**: 
             > ${{ github.event.comment.body }}
             
             コードの変更点を確認して、問題がなければマージしてください。
-            修正が必要な場合は、Issueで再度 `/gemini` を使って指示を出してください。
+            修正が必要な場合は、Issueで再度 `/gemini` を使って追加指示を出してください。
           labels: "automated,gemini"
