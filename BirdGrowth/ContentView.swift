@@ -30,15 +30,12 @@ struct ContentView: View {
         }
     }
 
-    /// 成長段階ごとに表示するアイコン（SF Symbols）
-    private var iconName: String {
+    /// 成長段階ごとに入力画像を左右にスライドさせるためのインデックス（0: 卵, 1: ヒナ, 2: 成鳥）
+    private var stageIndex: Int {
         switch stage {
-        case .egg:
-            return "oval.portrait.fill"
-        case .chick:
-            return "bird"
-        case .adult:
-            return "bird.fill"
+        case .egg: return 0
+        case .chick: return 1
+        case .adult: return 2
         }
     }
 
@@ -72,19 +69,23 @@ struct ContentView: View {
                 Spacer(minLength: 60)
 
                 // 画面中央：大きなインコアイコン＋歩数
-                VStack(spacing: 10) {
-                    Image(systemName: iconName)
-                        .font(.system(size: 120, weight: .regular))
-                        .foregroundStyle(stageColor)
-                        .accessibilityLabel("成長段階のアイコン")
-                        .shadow(
-                            color: stage == .egg
-                                ? Color.black.opacity(0.25) // 不透明度を上げて影を濃く
-                                : Color.clear,
-                            radius: 12,
-                            x: 0,
-                            y: 18 // オフセットを微調整して輪郭を際立たせる
-                        )
+                VStack(spacing: 24) {
+                    let frameSize: CGFloat = 180
+
+                    ZStack {
+                        // AI生成画像のデフォルト背景色（白）に合わせて、キャンバスを真っ白にする
+                        Color.white
+                        
+                        Image("bird_sprite")
+                            .resizable()
+                            .frame(width: frameSize * 3, height: frameSize * 3)
+                            .offset(x: frameSize * CGFloat(1 - stageIndex))
+                    }
+                    .frame(width: frameSize, height: frameSize)
+                    // 枠全体を角丸にして「一枚の白いディスプレイ」や「ポラロイド写真」のように扱い、背景から浮かび上がらせる
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 4)
+                    .accessibilityLabel("成長段階の画像")
 
                     Text("歩数: \(steps)")
                         .font(.title2)
