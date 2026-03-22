@@ -6,7 +6,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var steps = 0
+    // MARK: - App State (Variables)
+    @State private var steps: Int = 0
+
+    // 画像ガチャ用の状態変数
+    @State private var availableSprites: [String] = [] // スマホ内に保存された画像（のフルパス）リスト
+    @State private var currentSpritePath: String? = nil // 今ランダムで選ばれて表示されている画像
 
     // 定数定義
     private let chickThreshold = 1000
@@ -76,10 +81,19 @@ struct ContentView: View {
                         // AI生成画像のデフォルト背景色（白）に合わせて、キャンバスを真っ白にする
                         Color.white
                         
-                        Image("bird_sprite")
-                            .resizable()
-                            .frame(width: frameSize * 3, height: frameSize * 3)
-                            .offset(x: frameSize * CGFloat(1 - stageIndex))
+                        // フォルダからランダムで選ばれた画像を読み込む
+                        if let path = currentSpritePath, let uiImage = UIImage(contentsOfFile: path) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .frame(width: frameSize * 3, height: frameSize * 3)
+                                .offset(x: frameSize * CGFloat(1 - stageIndex))
+                        } else {
+                            // もしフォルダが見つからない/画像がない場合の保険（初期アセット）
+                            Image("bird_sprite")
+                                .resizable()
+                                .frame(width: frameSize * 3, height: frameSize * 3)
+                                .offset(x: frameSize * CGFloat(1 - stageIndex))
+                        }
                     }
                     .frame(width: frameSize, height: frameSize)
                     // 枠全体を角丸にして「一枚の白いディスプレイ」や「ポラロイド写真」のように扱い、背景から浮かび上がらせる
@@ -92,6 +106,11 @@ struct ContentView: View {
                         .fontWeight(.semibold)
                         .foregroundStyle(Color.primary)
                         .monospacedDigit()
+                        
+                    // デバッグ用（あとで消します）
+                    Text("認識した画像: \(availableSprites.count)枚")
+                        .font(.footnote)
+                        .foregroundStyle(availableSprites.isEmpty ? .red : .gray)
                 }
 
                 // ボタン：ステップ増やす / リセット
@@ -112,6 +131,11 @@ struct ContentView: View {
 
                     Button {
                         steps = 0
+                        
+                        // ガチャ処理：リセット時に、手持ちの画像リストの中から再度ランダムで1つを引き当てる
+                        if !availableSprites.isEmpty {
+                            currentSpritePath = availableSprites.randomElement()
+                        }
                     } label: {
                         Text("リセット")
                             .fontWeight(.semibold)
@@ -130,6 +154,25 @@ struct ContentView: View {
                 Spacer(minLength: 60)
             }
             .padding()
+            // 画面が最初に表示されたときに、フォルダ内の画像を自動スキャンする
+            .onAppear {
+                setupSprites()
+            }
+        }
+    }
+    
+    // MARK: - Logic Methods
+    
+    /// Spritesフォルダ内に入っている全ての画像をかき集め、1つをランダムに選ぶ
+    private func setupSprites() {
+        // Xcodeのグループ仕様（ただの仮想フォルダ）に対応するため、特定のフォルダ名を探すのではなく、アプリの全階層内からガチャ用画像（PNG/JPG）を全てかき集める
+        if let urls = Bundle.main.urls(forResourcesWithExtension: nil, subdirectory: nil) {
+            // PNGやJPGだけを抽出してパスに変換
+            let paths = urls.filter { $0.pathExtension.lowercased() == "png" || $0.pathExtension.lowercased() == "jpg" }.map { $0.path }
+            if !paths.isEmpty {
+                availableSprites = paths
+                currentSpritePath = paths.randomElement()
+            }
         }
     }
 }
