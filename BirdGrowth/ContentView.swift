@@ -76,7 +76,7 @@ struct ContentView: View {
                             color: stage == .egg
                                 ? Color.black.opacity(0.25) // 不透明度を上げて影を濃く
                                 : Color.clear,
-                            radius: 6, // 半径を小さくして影を硬く
+                            radius: 12,
                             x: 0,
                             y: 18 // オフセットを微調整して輪郭を際立たせる
                         )
