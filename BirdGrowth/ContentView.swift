@@ -8,6 +8,11 @@ import SwiftUI
 struct ContentView: View {
     @State private var steps = 0
 
+    // 定数定義
+    private let chickThreshold = 1000
+    private let adultThreshold = 5000
+    private let stepIncrement = 1000
+
     private enum GrowthStage {
         case egg
         case chick
@@ -16,9 +21,9 @@ struct ContentView: View {
 
     private var stage: GrowthStage {
         switch steps {
-        case 0 ... 999:
+        case 0 ..< chickThreshold:
             return .egg
-        case 1000 ... 4999:
+        case chickThreshold ..< adultThreshold:
             return .chick
         default:
             return .adult
@@ -88,12 +93,12 @@ struct ContentView: View {
                         .monospacedDigit()
                 }
 
-                // ボタン：1000歩増やす / リセット
+                // ボタン：ステップ増やす / リセット
                 VStack(spacing: 12) {
                     Button {
-                        steps += 1000
+                        steps += stepIncrement
                     } label: {
-                        Text("1000歩増やす")
+                        Text("\(stepIncrement)歩増やす")
                             .fontWeight(.semibold)
                             .foregroundStyle(Color.blue.opacity(0.95))
                             .frame(maxWidth: .infinity)
