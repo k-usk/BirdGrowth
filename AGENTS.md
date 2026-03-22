@@ -23,3 +23,8 @@
   2. 文体は「だ・である」調（常体）とし、感情や絵文字を控えた技術的なトーンにすること。
   3. 「作業内容」「苦労した点」「コードの要所抜粋とその解説」を必ず含めること。
   4. 読んだ人が「なぜそういうアーキテクチャにしたのか」を学習できるような詳細な解説を添えること。
+
+# Image Generation Prompt Rule
+- **基本ルール**: 画像を生成する依頼を受けた際、システム・プロンプトとして以下の英語テンプレートを必ず裏で組み立ててから生成を実行してください（アプリ内の1/3クロップ用の白背景スプライトシート形式を保つため）。
+- **ベース・プロンプト**: `8-bit pixel art, cute [COLOR] [BIRD_TYPE]. 16:9 aspect ratio, solid pure white background. Three stages of growth horizontally aligned with wide empty space between them. Left: egg. Center: baby chick. Right: adult bird. Make sure they are perfectly separated with huge gaps between each other so they do not overlap when divided into 3 equal square frames.`
+- **ランダムバリエーションの強制 (Constraint)**: `Even if the same bird type and color are requested, randomly change the pose, eye shape, body proportion slightly, or add a completely random small variation (like a ruffled head feather, different wing position, tiny blushing cheeks, or a subtle unique pattern) so EVERY generation is unique and slightly different.`
