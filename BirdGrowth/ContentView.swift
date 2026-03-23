@@ -10,18 +10,16 @@ struct ContentView: View {
     @State private var steps: Int = 0
 
     // 画像ガチャ用の状態変数
-    @State private var currentSpriteName: String? = nil // 現在表示中のAsset画像名
+    @State private var availableSprites: [URL] = [] // Sprites フォルダ内の画像URL一覧
+    @State private var currentSpriteURL: URL? = nil // 現在表示中の画像URL
 
-    /// Assets.xcassets/Sprites/ に登録されている全画像名
-    /// 画像を追加する際はここに1行追記するだけでOK（ロジック変更不要）
-    private let allSpriteNames: [String] = [
-        "Sprites/オキナインコ_ノーマル",
-        "Sprites/セキセイインコ_イエロー",
-    ]
-
-    /// 現在の鳥の名前（表示用：名前空間部分を除去）
+    /// 現在の鳥の名前（表示用：#以降の削除、_ をスペースに置換）
     private var currentBirdName: String {
-        currentSpriteName?.replacingOccurrences(of: "Sprites/", with: "") ?? "---"
+        guard let name = currentSpriteURL?.deletingPathExtension().lastPathComponent else { return "---" }
+        // # 以降を削除
+        let baseName = name.components(separatedBy: "#").first ?? name
+        // _ をスペースに置換
+        return baseName.replacingOccurrences(of: "_", with: " ")
     }
 
     // 定数定義
@@ -85,16 +83,33 @@ struct ContentView: View {
                 Spacer(minLength: 60)
 
                 // 画面中央：大きなインコアイコン＋歩数
-                VStack(spacing: 24) {
+                VStack(spacing: 16) {
                     let frameSize: CGFloat = 180
+
+                    // 鳥の名前（画像の上に配置し、レイアウトを固定）
+                    VStack {
+                        if stage == .adult {
+                            Text(currentBirdName)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundStyle(Color.primary)
+                                .transition(.opacity.combined(with: .scale))
+                        } else {
+                            // 非表示中も高さを確保してレイアウト崩れを防ぐ
+                            Text(" ")
+                                .font(.title3)
+                        }
+                    }
+                    .frame(height: 32)
+                    .animation(.spring(response: 0.5, dampingFraction: 0.7), value: stage)
 
                     ZStack {
                         // AI生成画像のデフォルト背景色（白）に合わせて、キャンバスを真っ白にする
                         Color.white
                         
-                        // Assets.xcassets からランダムで選ばれた画像を読み込む
-                        if let name = currentSpriteName {
-                            Image(name)
+                        // Folder Reference (Sprites/) から選ばれた画像を読み込む
+                        if let url = currentSpriteURL, let uiImage = UIImage(contentsOfFile: url.path) {
+                            Image(uiImage: uiImage)
                                 .resizable()
                                 .frame(width: frameSize * 3, height: frameSize * 3)
                                 .offset(x: frameSize * CGFloat(1 - stageIndex))
@@ -113,12 +128,6 @@ struct ContentView: View {
                     .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 4)
                     .accessibilityLabel("成長段階の画像")
 
-                    // 鳥の名前（ファイル名をそのまま表示）
-                    Text(currentBirdName)
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.primary)
-
                     Text("歩数: \(steps)")
                         .font(.title2)
                         .fontWeight(.semibold)
@@ -126,9 +135,9 @@ struct ContentView: View {
                         .monospacedDigit()
 
                     // デバッグ用（あとで消します）
-                    Text("登録画像: \(allSpriteNames.count)枚")
+                    Text("認識画像: \(availableSprites.count)枚")
                         .font(.footnote)
-                        .foregroundStyle(allSpriteNames.isEmpty ? .red : .gray)
+                        .foregroundStyle(availableSprites.isEmpty ? .red : .gray)
                 }
 
                 // ボタン：ステップ増やす / リセット
@@ -150,7 +159,7 @@ struct ContentView: View {
                     Button {
                         steps = 0
                         // ガチャ処理：リセット時にランダムで1つを選択
-                        currentSpriteName = allSpriteNames.randomElement()
+                        currentSpriteURL = availableSprites.randomElement()
                     } label: {
                         Text("リセット")
                             .fontWeight(.semibold)
@@ -169,11 +178,19 @@ struct ContentView: View {
                 Spacer(minLength: 60)
             }
             .padding()
-            // 画面が最初に表示されたとき、ランダムに1つ選ぶ
+            // 画面が最初に表示されたとき、スキャンして1つ選ぶ
             .onAppear {
-                currentSpriteName = allSpriteNames.randomElement()
+                setupSprites()
             }
         }
+    }
+
+    /// Sprites フォルダ内の全PNG画像をスキャンし、1つをランダムに選ぶ
+    /// 画像を追加する際は Sprites フォルダに PNG を置くだけでOK（完全自動）
+    private func setupSprites() {
+        let urls = Bundle.main.urls(forResourcesWithExtension: "png", subdirectory: "Sprites") ?? []
+        availableSprites = urls
+        currentSpriteURL = urls.randomElement()
     }
 }
 
