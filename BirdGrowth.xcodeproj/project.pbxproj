@@ -16,11 +16,6 @@
 			path = BirdGrowth;
 			sourceTree = "<group>";
 		};
-		7ED16FB52F703AD800B58893 /* Sprites */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Sprites;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,7 +34,6 @@
 			children = (
 				7ED16F9E2F6C318800B58893 /* BirdGrowth */,
 				7ED16F9D2F6C318800B58893 /* Products */,
-				7ED16FB52F703AD800B58893 /* Sprites */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,7 +62,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				7ED16F9E2F6C318800B58893 /* BirdGrowth */,
-				7ED16FB52F703AD800B58893 /* Sprites */,
 			);
 			name = BirdGrowth;
 			packageProductDependencies = (
