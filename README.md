@@ -1,2 +1,52 @@
-# BirdGrowth
-An iOS application built with AI assistance (Cursor).
+# BirdGrowth 🐣
+**あなたの歩みが、小さな命を育てる。**
+
+BirdGrowthは、日々の歩数に合わせて鳥を育てる、没入型・癒やし系育成iOSアプリです。
+「鳥をより愛おしく感じさせる」ことを究極の指針としてデザインされています。
+
+> [!NOTE]
+> **AI-First Development**
+> 本プロジェクトのすべてのコード実装、要件定義、およびドキュメント作成（このREADMEや技術ブログを含む）は、自律型AIエージェントと共に進められています。
+
+---
+
+## 🌟 特徴
+
+- **フルスクリーン没入UI**: 不要な要素を削ぎ落とし、鳥との時間に集中できる清潔感のあるデザイン。
+- **10段階オーガニック・ゲージ**: 1,000歩ごとの進捗を、成長ステージに合わせた色（白・オレンジ・ピンク）で表現。
+- **220種類の動なさえずり**: 成長の11段階それぞれに、ナラティブなメッセージと時折混ざるユーモア（計220パターン）を実装。
+- **ピクセルアート世界観**: 懐かしくも新しい、温かみのあるドット絵の鳥たちが登場。
+
+## 🏗 アーキテクチャ
+
+最新のSwiftUIベストプラクティスに基づいた **MVVM (Model-View-ViewModel)** パターンを採用しています。
+
+- **Observation Framework**: iOS 17以降の `@Observable` マクロを使用し、効率的な状態管理を実現。
+- **コンポーネント指向**: `BirdNestView` や `GrowthTrailView` など、再利用可能でテストしやすい設計。
+- **クリーンなフォルダ構成**:
+  - `Models/`: 純粋なデータ構造
+  - `ViewModels/`: ビジネスロジック
+  - `Views/`: レイアウト
+  - `Components/`: 共通部品
+
+## 🛠 技術スタック
+
+- **Language**: Swift 6.0
+- **Framework**: SwiftUI (iOS 17.0+)
+- **Design**: Vanilla CSS & Standard SwiftUI Components
+- **Asset Logic**: Folder-based dynamic sprite loading
+
+## 🚀 開発の進め方
+
+1. Xcodeで `BirdGrowth.xcodeproj` を開く。
+2. ターゲットを iOS 17.0 以上のデバイスまたはシミュレータに設定。
+3. `Command + R` で実行！
+
+---
+
+## 📜 ライセンス
+
+本プロジェクトは個人の学習およびAIとの共創実験として開発されています。
+
+---
+`[DIR]` (演出担当より): *「このアプリを通して、あなたの毎日の一歩が、小さな命を育む喜びになることを願っています。」*
