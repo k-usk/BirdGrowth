@@ -5,46 +5,36 @@
 
 import SwiftUI
 
+enum GrowthStage {
+    case egg, chick, adult
+}
+
 struct ContentView: View {
-    // MARK: - App State (Variables)
+    // MARK: - App State
     @State private var steps: Int = 0
-
-    // 画像ガチャ用の状態変数
-    @State private var availableSprites: [URL] = [] // Sprites フォルダ内の画像URL一覧
-    @State private var currentSpriteURL: URL? = nil // 現在表示中の画像URL
-
-    /// 現在の鳥の名前（表示用：#以降の削除、_ をスペースに置換）
-    private var currentBirdName: String {
-        guard let name = currentSpriteURL?.deletingPathExtension().lastPathComponent else { return "---" }
-        // # 以降を削除
-        let baseName = name.components(separatedBy: "#").first ?? name
-        // _ をスペースに置換
-        return baseName.replacingOccurrences(of: "_", with: " ")
-    }
-
-    // 定数定義
+    @State private var availableSprites: [URL] = []
+    @State private var currentSpriteURL: URL? = nil
+    @State private var selectedTab: Int = 0
+    
+    // デザイン用の定数
     private let chickThreshold = 1000
     private let adultThreshold = 5000
-    private let stepIncrement = 1000
-
-    private enum GrowthStage {
-        case egg
-        case chick
-        case adult
+    private let stepIncrement = 1200
+    private let goalSteps: Int = 10000
+    
+    // MARK: - Computed Properties
+    private var currentBirdName: String {
+        guard let name = currentSpriteURL?.deletingPathExtension().lastPathComponent else { return "???" }
+        let baseName = name.components(separatedBy: "#").first ?? name
+        return baseName.replacingOccurrences(of: "_", with: " ")
     }
-
+    
     private var stage: GrowthStage {
-        switch steps {
-        case 0 ..< chickThreshold:
-            return .egg
-        case chickThreshold ..< adultThreshold:
-            return .chick
-        default:
-            return .adult
-        }
+        if steps < chickThreshold { return .egg }
+        if steps < adultThreshold { return .chick }
+        return .adult
     }
-
-    /// 成長段階ごとに入力画像を左右にスライドさせるためのインデックス（0: 卵, 1: ヒナ, 2: 成鳥）
+    
     private var stageIndex: Int {
         switch stage {
         case .egg: return 0
@@ -52,145 +42,298 @@ struct ContentView: View {
         case .adult: return 2
         }
     }
-
-    /// 配色：オキナインコのイメージで、ブルー系のやさしいトーン
-    private var stageColor: Color {
+    
+    private var statusMessage: String {
         switch stage {
-        case .egg:
-            return Color(red: 1.0, green: 0.98, blue: 0.9)
-        case .chick:
-            return Color.blue.opacity(0.85)
-        case .adult:
-            return Color.indigo.opacity(0.85)
+        case .egg: return "静かに眠っています。ときどき動くかも？"
+        case .chick: return "元気いっぱいのヒナ。たくさん歩こう！"
+        case .adult: return "立派な成鳥になりました！"
         }
     }
 
     var body: some View {
         ZStack {
-            // 背景：ブルーの優しいグラデーション
+            // 背景グラデーション
             LinearGradient(
                 colors: [
-                    Color.blue.opacity(0.12),
-                    Color.cyan.opacity(0.16),
-                    Color.blue.opacity(0.10),
+                    Color(red: 0.95, green: 0.98, blue: 1.0),
+                    Color(red: 0.9, green: 0.95, blue: 1.0)
                 ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                startPoint: .top,
+                endPoint: .bottom
             )
             .ignoresSafeArea()
-
-            VStack(spacing: 18) {
-                Spacer(minLength: 60)
-
-                // 画面中央：大きなインコアイコン＋歩数
-                VStack(spacing: 16) {
-                    let frameSize: CGFloat = 180
-
-                    // 鳥の名前（画像の上に配置し、レイアウトを固定）
-                    VStack {
-                        if stage == .adult {
-                            Text(currentBirdName)
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundStyle(Color.primary)
-                                .transition(.opacity.combined(with: .scale))
-                        } else {
-                            // 非表示中も高さを確保してレイアウト崩れを防ぐ
-                            Text(" ")
-                                .font(.title3)
-                        }
-                    }
-                    .frame(height: 32)
-                    .animation(.spring(response: 0.5, dampingFraction: 0.7), value: stage)
-
-                    ZStack {
-                        // AI生成画像のデフォルト背景色（白）に合わせて、キャンバスを真っ白にする
-                        Color.white
-                        
-                        // Folder Reference (Sprites/) から選ばれた画像を読み込む
-                        if let url = currentSpriteURL, let uiImage = UIImage(contentsOfFile: url.path) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .frame(width: frameSize * 3, height: frameSize * 3)
-                                .offset(x: frameSize * CGFloat(1 - stageIndex))
-                        } else {
-                            // 画像がない場合のフォールバック
-                            Image(systemName: "bird")
-                                .resizable()
-                                .scaledToFit()
-                                .padding(40)
-                                .foregroundStyle(Color.blue.opacity(0.4))
-                        }
-                    }
-                    .frame(width: frameSize, height: frameSize)
-                    // 枠全体を角丸にして「一枚の白いディスプレイ」や「ポラロイド写真」のように扱い、背景から浮かび上がらせる
-                    .clipShape(RoundedRectangle(cornerRadius: 24))
-                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 4)
-                    .accessibilityLabel("成長段階の画像")
-
-                    Text("歩数: \(steps)")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(Color.primary)
-                        .monospacedDigit()
-
-                    // デバッグ用（あとで消します）
-                    Text("認識画像: \(availableSprites.count)枚")
-                        .font(.footnote)
-                        .foregroundStyle(availableSprites.isEmpty ? .red : .gray)
+            
+            VStack(spacing: 24) {
+                // 上部ステータスバー（リファレンスの真似）
+                HStack {
+                    Spacer()
+                    StatPill(icon: "leaf.fill", value: 0, color: .blue.opacity(0.1))
+                    StatPill(icon: "hexagon.fill", value: 0, color: .orange.opacity(0.1))
                 }
-
-                // ボタン：ステップ増やす / リセット
-                VStack(spacing: 12) {
-                    Button {
-                        steps += stepIncrement
-                    } label: {
-                        Text("\(stepIncrement)歩増やす")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(Color.blue.opacity(0.95))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color.blue.opacity(0.14))
-                            )
+                .padding(.horizontal)
+                .padding(.top, 10)
+                
+                // ナラティブ・ヘッダー
+                VStack(spacing: 4) {
+                    Text("3日目") // ダミー
+                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                    Text(statusMessage)
+                        .font(.system(size: 16, weight: .medium, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
+                
+                // メイン育成カード
+                BirdCardView(
+                    birdName: currentBirdName,
+                    steps: steps,
+                    goalSteps: goalSteps,
+                    stage: stage,
+                    stageIndex: stageIndex,
+                    currentSpriteURL: currentSpriteURL
+                )
+                .padding(.horizontal)
+                
+                // シェアボタン
+                Button(action: { /* Share action */ }) {
+                    HStack {
+                        Image(systemName: "square.and.arrow.up")
+                        Text("シェア")
                     }
-
-                    Button {
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                // デバッグ用操作パネル
+                HStack(spacing: 20) {
+                    Button(action: { steps += stepIncrement }) {
+                        Label("\(stepIncrement)歩", systemImage: "figure.walk")
+                            .font(.system(size: 14, weight: .bold))
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .background(Capsule().fill(Color.blue.opacity(0.1)))
+                    }
+                    
+                    Button(action: { 
                         steps = 0
-                        // ガチャ処理：リセット時にランダムで1つを選択
                         currentSpriteURL = availableSprites.randomElement()
-                    } label: {
-                        Text("リセット")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(Color.blue.opacity(0.9))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color.blue.opacity(0.07))
-                            )
+                    }) {
+                        Label("リセット", systemImage: "arrow.counterclockwise")
+                            .font(.system(size: 14, weight: .bold))
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .background(Capsule().fill(Color.red.opacity(0.05)))
+                            .foregroundStyle(.red.opacity(0.7))
                     }
                 }
-                .padding(.top, 4)
-                .padding(.horizontal, 10)
-
-                Spacer(minLength: 60)
+                
+                Spacer().frame(height: 60) // タブバー用のスペース
             }
-            .padding()
-            // 画面が最初に表示されたとき、スキャンして1つ選ぶ
-            .onAppear {
-                setupSprites()
+            
+            // フローティング・タブバー
+            VStack {
+                Spacer()
+                FloatingTabBar(selectedTab: $selectedTab)
             }
         }
+        .onAppear {
+            setupSprites()
+        }
     }
-
-    /// Sprites フォルダ内の全PNG画像をスキャンし、1つをランダムに選ぶ
-    /// 画像を追加する際は Sprites フォルダに PNG を置くだけでOK（完全自動）
+    
     private func setupSprites() {
         let urls = Bundle.main.urls(forResourcesWithExtension: "png", subdirectory: "Sprites") ?? []
         availableSprites = urls
         currentSpriteURL = urls.randomElement()
+    }
+}
+
+// MARK: - Subviews
+
+struct StatPill: View {
+    let icon: String
+    let value: Int
+    let color: Color
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.system(size: 12))
+            Text("\(value)")
+                .font(.system(size: 14, weight: .bold, design: .monospaced))
+        }
+        .padding(.vertical, 6)
+        .padding(.horizontal, 12)
+        .background(Capsule().fill(color))
+    }
+}
+
+struct BirdCardView: View {
+    let birdName: String
+    let steps: Int
+    let goalSteps: Int
+    let stage: GrowthStage
+    let stageIndex: Int
+    let currentSpriteURL: URL?
+    
+    private let frameSize: CGFloat = 200
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            // カード内上部ステータス
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Today")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(.white.opacity(0.8))
+                    HStack(alignment: .firstTextBaseline, spacing: 4) {
+                        Text("\(steps)")
+                            .font(.system(size: 28, weight: .bold, design: .rounded))
+                        Text("steps")
+                            .font(.system(size: 16, weight: .medium))
+                    }
+                    .foregroundStyle(.white)
+                }
+                Spacer()
+                Image(systemName: "chart.bar.fill")
+                    .foregroundStyle(.white.opacity(0.6))
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 24)
+            
+            // 鳥の画像エリア
+            ZStack {
+                // ドット絵背景（ごく薄いグリッドをイメージ）
+                Color.white
+                
+                if let url = currentSpriteURL, let uiImage = UIImage(contentsOfFile: url.path) {
+                    Image(uiImage: uiImage)
+                        .interpolation(.none) // ドットをパキッとさせる
+                        .resizable()
+                        .frame(width: frameSize * 3, height: frameSize * 3)
+                        .offset(x: frameSize * CGFloat(1 - stageIndex))
+                } else {
+                    Image(systemName: "bird")
+                        .font(.system(size: 60))
+                        .foregroundStyle(.blue.opacity(0.2))
+                }
+            }
+            .frame(width: frameSize, height: frameSize)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 5)
+            
+            // カード内下部ステータス
+            VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(stage == .adult ? birdName : "For this bird")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(.white.opacity(0.8))
+                    Text("\(steps) / \(goalSteps) steps")
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
+                }
+                
+                // セグメント化された成長プログレスバー
+                GrowthProgressBar(currentSteps: steps, goalSteps: goalSteps)
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 32)
+                .fill(
+                    LinearGradient(
+                        colors: [Color.blue.opacity(0.6), Color.blue.opacity(0.5)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 32)
+                .stroke(.white.opacity(0.2), lineWidth: 1)
+        )
+        .shadow(color: .blue.opacity(0.2), radius: 20, x: 0, y: 10)
+    }
+}
+
+struct GrowthProgressBar: View {
+    let currentSteps: Int
+    let goalSteps: Int
+    
+    var body: some View {
+        HStack(spacing: 4) {
+            ForEach(0..<4) { index in
+                segment(for: index)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func segment(for index: Int) -> some View {
+        let segmentGoal = Double(goalSteps) / 4.0
+        let progress = min(max(Double(currentSteps) - segmentGoal * Double(index), 0) / segmentGoal, 1.0)
+        
+        GeometryReader { geo in
+            ZStack(alignment: .leading) {
+                Capsule()
+                    .fill(.white.opacity(0.2))
+                Capsule()
+                    .fill(.white)
+                    .frame(width: geo.size.width * CGFloat(progress))
+            }
+        }
+        .frame(height: 6)
+    }
+}
+
+struct FloatingTabBar: View {
+    @Binding var selectedTab: Int
+    
+    var body: some View {
+        HStack {
+            TabItem(icon: "leaf.fill", label: "ホーム", isSelected: selectedTab == 0) { selectedTab = 0 }
+            Spacer()
+            TabItem(icon: "square.grid.2x2.fill", label: "コレクション", isSelected: selectedTab == 1) { selectedTab = 1 }
+            Spacer()
+            TabItem(icon: "gearshape.fill", label: "設定", isSelected: selectedTab == 2) { selectedTab = 2 }
+        }
+        .padding(.horizontal, 30)
+        .padding(.vertical, 12)
+        .background(
+            Capsule()
+                .fill(.white)
+                .shadow(color: .black.opacity(0.08), radius: 15, x: 0, y: 5)
+        )
+        .padding(.horizontal, 24)
+        .padding(.bottom, 20)
+    }
+}
+
+struct TabItem: View {
+    let icon: String
+    let label: String
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.system(size: 20))
+                Text(label)
+                    .font(.caption2)
+                    .fontWeight(.medium)
+            }
+            .foregroundStyle(isSelected ? .black : .gray.opacity(0.5))
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 4)
+            .background(
+                isSelected ? Capsule().fill(Color.gray.opacity(0.1)) : Capsule().fill(Color.clear)
+            )
+        }
     }
 }
 
