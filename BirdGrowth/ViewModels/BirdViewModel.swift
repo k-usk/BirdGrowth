@@ -11,14 +11,22 @@ import Observation
 class BirdViewModel {
     
     // MARK: - State
-    var steps: Int = 0
+    var steps: Int = 0 {
+        didSet {
+            updateMessageIfNeeded()
+        }
+    }
     var availableSprites: [URL] = []
     var currentSpriteURL: URL? = nil
+    
+    // 現在表示中のランダムメッセージ
+    private(set) var currentMessage: String = "しずかだね"
+    private var lastSegmentIndex: Int = -1
     
     // MARK: - Constants
     let chickThreshold = 5000
     let adultThreshold = 10000
-    let stepIncrement = 1200
+    let stepIncrement = 1000 // ゲージに合わせて1000歩に変更
     let goalSteps: Int = 10000
     
     // MARK: - Computed Properties
@@ -46,27 +54,36 @@ class BirdViewModel {
         }
     }
     
-    /// 段階に応じた鳥からのメッセージ
+    /// 段階に応じた鳥からのメッセージ（動的に更新される）
     var statusMessage: String {
-        switch stage {
-        case .egg: return "ころんとしています。もうすぐかな？"
-        case .chick: return "ぴよぴよ元気！たくさん歩いてね。"
-        case .adult: return "立派な成鳥さん！"
-        }
+        currentMessage
     }
     
     // MARK: - Methods
+    
+    /// 1,000歩ごとの区切りを越えたらメッセージを再抽選する
+    private func updateMessageIfNeeded() {
+        let segmentIndex = min(max(steps / 1000, 0), 10) // 10000歩以上の特別枠(Index 10)に対応
+        if segmentIndex != lastSegmentIndex {
+            let pool = BirdMessageBank.messages[segmentIndex]
+            currentMessage = pool.randomElement() ?? "……"
+            lastSegmentIndex = segmentIndex
+        }
+    }
     
     /// スプライト画像を読み込み、ランダムに1体を選ぶ
     func setupSprites() {
         let urls = Bundle.main.urls(forResourcesWithExtension: "png", subdirectory: "Sprites") ?? []
         availableSprites = urls
         currentSpriteURL = urls.randomElement()
+        updateMessageIfNeeded()
     }
     
     /// デバッグ用：歩数をリセットし、鳥をランダムに入れ替える
     func resetAndRandomize() {
         steps = 0
+        lastSegmentIndex = -1 // リセットして初回メッセージが出るように
         currentSpriteURL = availableSprites.randomElement()
+        updateMessageIfNeeded()
     }
 }
