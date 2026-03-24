@@ -24,6 +24,11 @@
   3. 「作業内容」「苦労した点」「コードの要所抜粋とその解説」を必ず含めること。
   4. 読んだ人が「なぜそういうアーキテクチャにしたのか」を学習できるような詳細な解説を添えること。
 
+# Artifact Management Rule (Daily Reset)
+- `task.md` と `walkthrough.md` は、「一日の作業単位」で管理・リセットを行う。
+- 日付の切り替わり（毎朝5:00基準）後の最初のセッションで、前日のタスクをクリア、または「過去の記録」セクションへ移動し、まっさらな状態からその日の作業を開始する。
+- これにより、一日の成果を技術ブログ (`blog/YYYY-MM-DD.md`) と照らし合わせやすく、日次での進捗を明確に保つ。
+
 # Image Generation Prompt Rule
 - **基本ルール**: 画像を生成する依頼を受けた際、システム・プロンプトとして以下の英語テンプレートを必ず裏で組み立ててから生成を実行してください（アプリ内の1/3クロップ用の白背景スプライトシート形式を保つため）。
 - **ベース・プロンプト**: `8-bit pixel art, cute [COLOR] [BIRD_TYPE]. 16:9 aspect ratio, solid pure white background. Three stages of growth horizontally aligned with wide empty space between them. Left: egg. Center: baby chick. Right: adult bird. Make sure they are perfectly separated with huge gaps between each other so they do not overlap when divided into 3 equal square frames.`
