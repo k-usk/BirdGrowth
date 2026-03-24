@@ -63,21 +63,16 @@ struct ContentView: View {
             )
             .ignoresSafeArea()
             
-            VStack(spacing: 32) {
-                Spacer(minLength: 40)
+            VStack(spacing: 20) {
+                Spacer(minLength: 20)
                 
-                // ナラティブ・ヘッダー
-                VStack(spacing: 8) {
-                    Text("3日目") // ダミー
-                        .font(.system(size: 28, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.brown.opacity(0.8))
-                    
-                    Text(statusMessage)
-                        .font(.system(size: 17, weight: .medium, design: .rounded))
-                        .foregroundStyle(Color.brown.opacity(0.6))
-                }
+                // メッセージエリア
+                Text(statusMessage)
+                    .font(.system(size: 18, weight: .medium, design: .rounded))
+                    .foregroundStyle(Color.brown.opacity(0.6))
+                    .padding(.horizontal)
                 
-                // 鳥のネスト（メインカード）
+                // 鳥のネスト（メイン画面）
                 BirdNestView(
                     birdName: currentBirdName,
                     steps: steps,
@@ -86,14 +81,7 @@ struct ContentView: View {
                     stageIndex: stageIndex,
                     currentSpriteURL: currentSpriteURL
                 )
-                .padding(.horizontal, 20)
-                
-                // シェアボタン（控えめに）
-                Button(action: { /* Share action */ }) {
-                    Label("幸せをシェア", systemImage: "heart.fill")
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
-                        .foregroundStyle(Color.pink.opacity(0.4))
-                }
+                .padding(.horizontal, 10) // 左右の余白をさらに詰め、画面いっぱいに表示
                 
                 Spacer()
                 
@@ -138,7 +126,7 @@ struct BirdNestView: View {
     let stageIndex: Int
     let currentSpriteURL: URL?
     
-    private let frameSize: CGFloat = 210
+    private let frameSize: CGFloat = 300 // イラスト表示エリアをさらに拡大
     
     var body: some View {
         VStack(spacing: 24) {
@@ -149,15 +137,15 @@ struct BirdNestView: View {
                     .foregroundStyle(Color.brown.opacity(0.4))
                 
                 Text("\(steps)")
-                    .font(.system(size: 40, weight: .bold, design: .rounded))
+                    .font(.system(size: 48, weight: .bold, design: .rounded))
                     .foregroundStyle(Color.brown.opacity(0.8))
             }
-            .padding(.top, 30)
+            .padding(.top, 40)
             
             // 鳥の画像エリア
             ZStack {
-                // ドット絵背景（より丸みのあるソフトな背景）
-                Circle()
+                // ドット絵背景（少し角を丸めた正方形）
+                RoundedRectangle(cornerRadius: 24)
                     .fill(Color.white)
                     .frame(width: frameSize, height: frameSize)
                     .shadow(color: Color.brown.opacity(0.05), radius: 15, x: 0, y: 5)
@@ -175,12 +163,12 @@ struct BirdNestView: View {
                 }
             }
             .frame(width: frameSize, height: frameSize)
-            .clipShape(Circle())
+            .clipShape(RoundedRectangle(cornerRadius: 24)) // ここも角丸正方形に
             
             // 下部ステータスとプログレス
-            VStack(spacing: 16) {
+            VStack(spacing: 20) {
                 Text(stage == .adult ? birdName : "成長のきろく")
-                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
                     .foregroundStyle(Color.brown.opacity(0.7))
                 
                 // オリジナル進捗バー
@@ -190,9 +178,9 @@ struct BirdNestView: View {
                     .font(.system(size: 14, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brown.opacity(0.4))
             }
-            .padding(.bottom, 30)
+            .padding(.bottom, 40)
         }
-        .padding(.horizontal, 20)
+        .frame(maxWidth: .infinity, maxHeight: .infinity) // 枠を画面いっぱいに広げる
         .background(
             RoundedRectangle(cornerRadius: 48)
                 .fill(Color.white.opacity(0.7))
