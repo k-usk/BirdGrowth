@@ -16,8 +16,8 @@ struct ContentView: View {
     @State private var currentSpriteURL: URL? = nil
     
     // デザイン用の定数
-    private let chickThreshold = 1000
-    private let adultThreshold = 5000
+    private let chickThreshold = 5000
+    private let adultThreshold = 10000
     private let stepIncrement = 1200
     private let goalSteps: Int = 10000
     
@@ -46,7 +46,7 @@ struct ContentView: View {
         switch stage {
         case .egg: return "ころんとしています。もうすぐかな？"
         case .chick: return "ぴよぴよ元気！たくさん歩いてね。"
-        case .adult: return "立派な成鳥さん！いつも一緒だよ。"
+        case .adult: return "立派な成鳥さん！"
         }
     }
 
@@ -66,15 +66,18 @@ struct ContentView: View {
             VStack(spacing: 20) {
                 Spacer(minLength: 20)
                 
-                // メッセージエリア
-                Text(statusMessage)
-                    .font(.system(size: 18, weight: .medium, design: .rounded))
-                    .foregroundStyle(Color.brown.opacity(0.6))
-                    .padding(.horizontal)
+                // メインタイトル（高さを固定してガタつきを防止）
+                Text(currentBirdName)
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.brown.opacity(0.8))
+                    .opacity(stage == .adult ? 1 : 0)
+                    .frame(height: 32)
+                    .padding(.top, 20)
                 
                 // 鳥のネスト（メイン画面）
                 BirdNestView(
                     birdName: currentBirdName,
+                    statusMessage: statusMessage,
                     steps: steps,
                     goalSteps: goalSteps,
                     stage: stage,
@@ -120,6 +123,7 @@ struct ContentView: View {
 
 struct BirdNestView: View {
     let birdName: String
+    let statusMessage: String
     let steps: Int
     let goalSteps: Int
     let stage: GrowthStage
@@ -167,9 +171,12 @@ struct BirdNestView: View {
             
             // 下部ステータスとプログレス
             VStack(spacing: 20) {
-                Text(stage == .adult ? birdName : "成長のきろく")
+                // 鳥からのメッセージをメインに表示
+                Text(statusMessage)
                     .font(.system(size: 18, weight: .bold, design: .rounded))
                     .foregroundStyle(Color.brown.opacity(0.7))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
                 
                 // オリジナル進捗バー
                 GrowthTrailView(currentSteps: steps, goalSteps: goalSteps)
