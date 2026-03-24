@@ -14,7 +14,6 @@ struct ContentView: View {
     @State private var steps: Int = 0
     @State private var availableSprites: [URL] = []
     @State private var currentSpriteURL: URL? = nil
-    @State private var selectedTab: Int = 0
     
     // デザイン用の定数
     private let chickThreshold = 1000
@@ -45,46 +44,41 @@ struct ContentView: View {
     
     private var statusMessage: String {
         switch stage {
-        case .egg: return "静かに眠っています。ときどき動くかも？"
-        case .chick: return "元気いっぱいのヒナ。たくさん歩こう！"
-        case .adult: return "立派な成鳥になりました！"
+        case .egg: return "ころんとしています。もうすぐかな？"
+        case .chick: return "ぴよぴよ元気！たくさん歩いてね。"
+        case .adult: return "立派な成鳥さん！いつも一緒だよ。"
         }
     }
 
     var body: some View {
         ZStack {
-            // 背景グラデーション
+            // 背景：優しく暖かいパステルカラー
             LinearGradient(
                 colors: [
-                    Color(red: 0.95, green: 0.98, blue: 1.0),
-                    Color(red: 0.9, green: 0.95, blue: 1.0)
+                    Color(red: 1.0, green: 0.98, blue: 0.94), // クリーム色
+                    Color(red: 1.0, green: 0.94, blue: 0.94)  // ほんのりピンク
                 ],
                 startPoint: .top,
                 endPoint: .bottom
             )
             .ignoresSafeArea()
             
-            VStack(spacing: 24) {
-                // 上部ステータスバー（リファレンスの真似）
-                HStack {
-                    Spacer()
-                    StatPill(icon: "leaf.fill", value: 0, color: .blue.opacity(0.1))
-                    StatPill(icon: "hexagon.fill", value: 0, color: .orange.opacity(0.1))
-                }
-                .padding(.horizontal)
-                .padding(.top, 10)
+            VStack(spacing: 32) {
+                Spacer(minLength: 40)
                 
                 // ナラティブ・ヘッダー
-                VStack(spacing: 4) {
+                VStack(spacing: 8) {
                     Text("3日目") // ダミー
-                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .font(.system(size: 28, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.brown.opacity(0.8))
+                    
                     Text(statusMessage)
-                        .font(.system(size: 16, weight: .medium, design: .rounded))
-                        .foregroundStyle(.secondary)
+                        .font(.system(size: 17, weight: .medium, design: .rounded))
+                        .foregroundStyle(Color.brown.opacity(0.6))
                 }
                 
-                // メイン育成カード
-                BirdCardView(
+                // 鳥のネスト（メインカード）
+                BirdNestView(
                     birdName: currentBirdName,
                     steps: steps,
                     goalSteps: goalSteps,
@@ -92,50 +86,34 @@ struct ContentView: View {
                     stageIndex: stageIndex,
                     currentSpriteURL: currentSpriteURL
                 )
-                .padding(.horizontal)
+                .padding(.horizontal, 20)
                 
-                // シェアボタン
+                // シェアボタン（控えめに）
                 Button(action: { /* Share action */ }) {
-                    HStack {
-                        Image(systemName: "square.and.arrow.up")
-                        Text("シェア")
-                    }
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.secondary)
+                    Label("幸せをシェア", systemImage: "heart.fill")
+                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Color.pink.opacity(0.4))
                 }
                 
                 Spacer()
                 
-                // デバッグ用操作パネル
-                HStack(spacing: 20) {
+                // デバッグ用（控えめなボタン）
+                HStack(spacing: 30) {
                     Button(action: { steps += stepIncrement }) {
-                        Label("\(stepIncrement)歩", systemImage: "figure.walk")
-                            .font(.system(size: 14, weight: .bold))
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 16)
-                            .background(Capsule().fill(Color.blue.opacity(0.1)))
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 24))
                     }
                     
                     Button(action: { 
                         steps = 0
                         currentSpriteURL = availableSprites.randomElement()
                     }) {
-                        Label("リセット", systemImage: "arrow.counterclockwise")
-                            .font(.system(size: 14, weight: .bold))
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 16)
-                            .background(Capsule().fill(Color.red.opacity(0.05)))
-                            .foregroundStyle(.red.opacity(0.7))
+                        Image(systemName: "arrow.counterclockwise.circle.fill")
+                            .font(.system(size: 24))
                     }
                 }
-                
-                Spacer().frame(height: 60) // タブバー用のスペース
-            }
-            
-            // フローティング・タブバー
-            VStack {
-                Spacer()
-                FloatingTabBar(selectedTab: $selectedTab)
+                .foregroundStyle(Color.brown.opacity(0.15))
+                .padding(.bottom, 20)
             }
         }
         .onAppear {
@@ -152,25 +130,7 @@ struct ContentView: View {
 
 // MARK: - Subviews
 
-struct StatPill: View {
-    let icon: String
-    let value: Int
-    let color: Color
-    
-    var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: icon)
-                .font(.system(size: 12))
-            Text("\(value)")
-                .font(.system(size: 14, weight: .bold, design: .monospaced))
-        }
-        .padding(.vertical, 6)
-        .padding(.horizontal, 12)
-        .background(Capsule().fill(color))
-    }
-}
-
-struct BirdCardView: View {
+struct BirdNestView: View {
     let birdName: String
     let steps: Int
     let goalSteps: Int
@@ -178,162 +138,94 @@ struct BirdCardView: View {
     let stageIndex: Int
     let currentSpriteURL: URL?
     
-    private let frameSize: CGFloat = 200
+    private let frameSize: CGFloat = 210
     
     var body: some View {
-        VStack(spacing: 20) {
-            // カード内上部ステータス
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Today")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(.white.opacity(0.8))
-                    HStack(alignment: .firstTextBaseline, spacing: 4) {
-                        Text("\(steps)")
-                            .font(.system(size: 28, weight: .bold, design: .rounded))
-                        Text("steps")
-                            .font(.system(size: 16, weight: .medium))
-                    }
-                    .foregroundStyle(.white)
-                }
-                Spacer()
-                Image(systemName: "chart.bar.fill")
-                    .foregroundStyle(.white.opacity(0.6))
+        VStack(spacing: 24) {
+            // 歩数表示エリア
+            VStack(spacing: 6) {
+                Text("Today's Steps")
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.brown.opacity(0.4))
+                
+                Text("\(steps)")
+                    .font(.system(size: 40, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.brown.opacity(0.8))
             }
-            .padding(.horizontal, 24)
-            .padding(.top, 24)
+            .padding(.top, 30)
             
             // 鳥の画像エリア
             ZStack {
-                // ドット絵背景（ごく薄いグリッドをイメージ）
-                Color.white
+                // ドット絵背景（より丸みのあるソフトな背景）
+                Circle()
+                    .fill(Color.white)
+                    .frame(width: frameSize, height: frameSize)
+                    .shadow(color: Color.brown.opacity(0.05), radius: 15, x: 0, y: 5)
                 
                 if let url = currentSpriteURL, let uiImage = UIImage(contentsOfFile: url.path) {
                     Image(uiImage: uiImage)
-                        .interpolation(.none) // ドットをパキッとさせる
+                        .interpolation(.none)
                         .resizable()
                         .frame(width: frameSize * 3, height: frameSize * 3)
                         .offset(x: frameSize * CGFloat(1 - stageIndex))
                 } else {
-                    Image(systemName: "bird")
+                    Image(systemName: "bird.fill")
                         .font(.system(size: 60))
-                        .foregroundStyle(.blue.opacity(0.2))
+                        .foregroundStyle(Color.brown.opacity(0.1))
                 }
             }
             .frame(width: frameSize, height: frameSize)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 5)
+            .clipShape(Circle())
             
-            // カード内下部ステータス
-            VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(stage == .adult ? birdName : "For this bird")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(.white.opacity(0.8))
-                    Text("\(steps) / \(goalSteps) steps")
-                        .font(.system(size: 18, weight: .bold, design: .rounded))
-                        .foregroundStyle(.white)
-                }
+            // 下部ステータスとプログレス
+            VStack(spacing: 16) {
+                Text(stage == .adult ? birdName : "成長のきろく")
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.brown.opacity(0.7))
                 
-                // セグメント化された成長プログレスバー
-                GrowthProgressBar(currentSteps: steps, goalSteps: goalSteps)
+                // オリジナル進捗バー
+                GrowthTrailView(currentSteps: steps, goalSteps: goalSteps)
+                
+                Text("\(steps) / \(goalSteps) steps")
+                    .font(.system(size: 14, weight: .medium, design: .monospaced))
+                    .foregroundStyle(Color.brown.opacity(0.4))
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 24)
+            .padding(.bottom, 30)
         }
+        .padding(.horizontal, 20)
         .background(
-            RoundedRectangle(cornerRadius: 32)
-                .fill(
-                    LinearGradient(
-                        colors: [Color.blue.opacity(0.6), Color.blue.opacity(0.5)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+            RoundedRectangle(cornerRadius: 48)
+                .fill(Color.white.opacity(0.7))
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 32)
-                .stroke(.white.opacity(0.2), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 48)
+                .stroke(Color.white, lineWidth: 2)
         )
-        .shadow(color: .blue.opacity(0.2), radius: 20, x: 0, y: 10)
+        .shadow(color: Color.brown.opacity(0.06), radius: 25, x: 0, y: 15)
     }
 }
 
-struct GrowthProgressBar: View {
+struct GrowthTrailView: View {
     let currentSteps: Int
     let goalSteps: Int
     
     var body: some View {
-        HStack(spacing: 4) {
-            ForEach(0..<4) { index in
-                segment(for: index)
+        HStack(spacing: 10) {
+            ForEach(0..<5) { index in
+                featherIcon(for: index)
             }
         }
     }
     
-    @ViewBuilder
-    private func segment(for index: Int) -> some View {
-        let segmentGoal = Double(goalSteps) / 4.0
-        let progress = min(max(Double(currentSteps) - segmentGoal * Double(index), 0) / segmentGoal, 1.0)
+    private func featherIcon(for index: Int) -> some View {
+        let segmentGoal = Double(goalSteps) / 5.0
+        let reached = Double(currentSteps) >= segmentGoal * Double(index + 1)
         
-        GeometryReader { geo in
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .fill(.white.opacity(0.2))
-                Capsule()
-                    .fill(.white)
-                    .frame(width: geo.size.width * CGFloat(progress))
-            }
-        }
-        .frame(height: 6)
-    }
-}
-
-struct FloatingTabBar: View {
-    @Binding var selectedTab: Int
-    
-    var body: some View {
-        HStack {
-            TabItem(icon: "leaf.fill", label: "ホーム", isSelected: selectedTab == 0) { selectedTab = 0 }
-            Spacer()
-            TabItem(icon: "square.grid.2x2.fill", label: "コレクション", isSelected: selectedTab == 1) { selectedTab = 1 }
-            Spacer()
-            TabItem(icon: "gearshape.fill", label: "設定", isSelected: selectedTab == 2) { selectedTab = 2 }
-        }
-        .padding(.horizontal, 30)
-        .padding(.vertical, 12)
-        .background(
-            Capsule()
-                .fill(.white)
-                .shadow(color: .black.opacity(0.08), radius: 15, x: 0, y: 5)
-        )
-        .padding(.horizontal, 24)
-        .padding(.bottom, 20)
-    }
-}
-
-struct TabItem: View {
-    let icon: String
-    let label: String
-    let isSelected: Bool
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 4) {
-                Image(systemName: icon)
-                    .font(.system(size: 20))
-                Text(label)
-                    .font(.caption2)
-                    .fontWeight(.medium)
-            }
-            .foregroundStyle(isSelected ? .black : .gray.opacity(0.5))
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 4)
-            .background(
-                isSelected ? Capsule().fill(Color.gray.opacity(0.1)) : Capsule().fill(Color.clear)
-            )
-        }
+        return Image(systemName: "feather.fill")
+            .font(.system(size: 18))
+            .foregroundStyle(reached ? Color.orange.opacity(0.6) : Color.brown.opacity(0.1))
+            .scaleEffect(reached ? 1.1 : 0.9)
+            .animation(.spring(response: 0.5, dampingFraction: 0.6), value: reached)
     }
 }
 
