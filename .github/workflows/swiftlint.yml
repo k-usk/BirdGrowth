@@ -1,0 +1,23 @@
+# SwiftLint自動チェックワークフロー
+name: SwiftLint
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  SwiftLint:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # SwiftLintのバージョンを固定し、キャッシュを利用して高速化する公式アクションを使用
+      - name: Run SwiftLint
+        uses: realm/SwiftLint@v1
+        with:
+          version: '0.63.2'     # ローカルと同じバージョンを推奨
+          strict: true          # 規約違反をエラーとして扱い、ジョブを失敗させる
+          reporter: 'github'    # GitHubのプルリクエスト上にエラーを直接表示
