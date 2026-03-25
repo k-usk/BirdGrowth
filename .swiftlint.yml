@@ -1,0 +1,124 @@
+# SwiftLint Configuration
+# 厳格な商用クオリティ設定 (0.63.2 対応)
+
+# 無効化するルール
+disabled_rules:
+  - todo
+
+# 追加で有効化するルール (Lint時)
+opt_in_rules:
+  - array_init
+  - attributes
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - colon
+  - comma
+  - contains_over_first_not_nil
+  - discouraged_direct_init
+  - duplicate_imports
+  - empty_count
+  - empty_string
+  - empty_xctest_method
+  - fatal_error_message
+  - first_where
+  - force_unwrapping
+  - force_try
+  - identical_operands
+  - joined_default_parameter
+  - legacy_random
+  - literal_expression_end_indentation
+  - modifier_order
+  - multiline_arguments
+  - multiline_function_chains
+  - multiline_parameters
+  - nimble_operator
+  - operator_usage_whitespace
+  - overridden_super_call
+  - private_over_fileprivate
+  - quick_discouraged_call
+  - quick_discouraged_focused_test
+  - quick_discouraged_pending_test
+  - redundant_nil_coalescing
+  - redundant_type_annotation
+  - single_test_class
+  - sorted_imports
+  - static_operator
+  - toggle_bool
+  - unavailable_function
+  - unneeded_break_in_switch
+  - unneeded_parentheses_in_closure_argument
+  - unused_private_declaration
+  - vertical_parameter_alignment_on_call
+  - vertical_whitespace_closing_braces
+  - vertical_whitespace_opening_braces
+  - xct_specific_matcher
+
+# 解析ルール (SwiftLint Analyze用、最新版で必要な分類)
+analyzer_rules:
+  - unused_import
+
+# 実行対象
+included:
+  - .
+
+# 除外対象
+excluded:
+  - BirdGrowth/Preview Content
+  - BirdGrowthTests
+  - BirdGrowthUITests
+
+# 各ルールの詳細設定
+force_cast: error
+force_try: error
+force_unwrapping: error
+
+cyclomatic_complexity:
+  warning: 7
+  error: 10
+
+file_length:
+  warning: 400
+  error: 500
+
+line_length: 
+  warning: 100
+  error: 120
+  ignores_urls: true
+  ignores_function_declarations: true
+  ignores_comments: true
+
+function_body_length:
+  warning: 40
+  error: 50
+
+type_body_length:
+  warning: 200
+  error: 300
+
+nesting:
+  type_level:
+    warning: 3
+    error: 4
+  function_level:
+    warning: 4
+    error: 5
+
+function_parameter_count:
+  warning: 5
+  error: 8
+
+large_tuple:
+  warning: 2
+  error: 3
+
+identifier_name:
+  min_length: 3
+  max_length: 40
+  excluded:
+    - id
+    - x
+    - y
+    - z
+
+reporter: "xcode"

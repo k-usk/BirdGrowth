@@ -6,9 +6,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @State private var viewModel = BirdViewModel()
-    
+
     var body: some View {
         ZStack {
             // 背景：優しく暖かいパステルカラー
@@ -21,10 +20,10 @@ struct ContentView: View {
                 endPoint: .bottom
             )
             .ignoresSafeArea()
-            
+
             VStack(spacing: 20) {
                 Spacer(minLength: 20)
-                
+
                 // メインタイトル（高さを固定してガタつきを防止）
                 Text(viewModel.currentBirdName)
                     .font(.system(size: 24, weight: .bold, design: .rounded))
@@ -32,7 +31,7 @@ struct ContentView: View {
                     .opacity(viewModel.stage == .adult ? 1 : 0)
                     .frame(height: 32)
                     .padding(.top, 20)
-                
+
                 // 鳥のネスト（メイン画面）
                 BirdNestView(
                     birdName: viewModel.currentBirdName,
@@ -44,20 +43,20 @@ struct ContentView: View {
                     currentSpriteURL: viewModel.currentSpriteURL
                 )
                 .padding(.horizontal, 10)
-                
+
                 Spacer()
-                
+
                 // デバッグ用（控えめなボタン）
                 HStack(spacing: 30) {
-                    Button(action: { viewModel.steps += viewModel.stepIncrement }) {
+                    Button(action: { viewModel.steps += viewModel.stepIncrement }, label: {
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: 24))
-                    }
-                    
-                    Button(action: { viewModel.resetAndRandomize() }) {
+                    })
+
+                    Button(action: { viewModel.resetAndRandomize() }, label: {
                         Image(systemName: "arrow.counterclockwise.circle.fill")
                             .font(.system(size: 24))
-                    }
+                    })
                 }
                 .foregroundStyle(Color.brown.opacity(0.15))
                 .padding(.bottom, 20)

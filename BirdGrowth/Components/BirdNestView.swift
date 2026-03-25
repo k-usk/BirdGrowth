@@ -14,9 +14,9 @@ struct BirdNestView: View {
     let stage: GrowthStage
     let stageIndex: Int
     let currentSpriteURL: URL?
-    
+
     private let frameSize: CGFloat = 300
-    
+
     var body: some View {
         VStack(spacing: 24) {
             // 歩数表示エリア
@@ -24,20 +24,20 @@ struct BirdNestView: View {
                 Text("Today's Steps")
                     .font(.system(size: 14, weight: .bold, design: .rounded))
                     .foregroundStyle(Color.brown.opacity(0.4))
-                
+
                 Text("\(steps)")
                     .font(.system(size: 48, weight: .bold, design: .rounded))
                     .foregroundStyle(Color.brown.opacity(0.8))
             }
             .padding(.top, 40)
-            
+
             // 鳥の画像エリア
             ZStack {
                 RoundedRectangle(cornerRadius: 24)
                     .fill(Color.white)
                     .frame(width: frameSize, height: frameSize)
                     .shadow(color: Color.brown.opacity(0.05), radius: 15, x: 0, y: 5)
-                
+
                 if let url = currentSpriteURL, let uiImage = UIImage(contentsOfFile: url.path) {
                     Image(uiImage: uiImage)
                         .interpolation(.none)
@@ -52,7 +52,7 @@ struct BirdNestView: View {
             }
             .frame(width: frameSize, height: frameSize)
             .clipShape(RoundedRectangle(cornerRadius: 24))
-            
+
             // 下部ステータスとプログレス
             VStack(spacing: 20) {
                 Text(statusMessage)
@@ -60,9 +60,9 @@ struct BirdNestView: View {
                     .foregroundStyle(Color.brown.opacity(0.7))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
-                
+
                 GrowthTrailView(currentSteps: steps, goalSteps: goalSteps, stage: stage)
-                
+
                 Text("\(steps) / \(goalSteps) steps")
                     .font(.system(size: 14, weight: .medium, design: .monospaced))
                     .foregroundStyle(Color.brown.opacity(0.4))
