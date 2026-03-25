@@ -1,4 +1,3 @@
-# SwiftLint自動チェックワークフロー
 name: SwiftLint
 
 on:
@@ -9,15 +8,14 @@ on:
 
 jobs:
   SwiftLint:
+    # GitHubが提供する最新のMac環境を使用（標準でSwiftLintがインストールされています）
     runs-on: macos-latest
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      # SwiftLintのバージョンを固定し、キャッシュを利用して高速化する公式アクションを使用
       - name: Run SwiftLint
-        uses: realm/SwiftLint@v1
-        with:
-          version: '0.63.2'     # ローカルと同じバージョンを推奨
-          strict: true          # 規約違反をエラーとして扱い、ジョブを失敗させる
-          reporter: 'github'    # GitHubのプルリクエスト上にエラーを直接表示
+        # 外部Actionを使わず、システム標準のswiftlintコマンドを直接実行して高速化
+        # --strict: 規約違反をエラー扱いにしてビルドを失敗させ、商用品質を担保
+        # --reporter github-actions-logging: GitHubのアクション画面にエラー箇所を直接表示
+        run: swiftlint lint --strict --reporter github-actions-logging
