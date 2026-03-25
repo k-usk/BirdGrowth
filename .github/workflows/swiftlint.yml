@@ -18,18 +18,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Homebrewを高速化するためのキャッシュ設定（キャッシュキーをv2に更新）
-      - name: Cache SwiftLint
-        id: cache-swiftlint
-        uses: actions/cache@v4
-        with:
-          # Appleシリコン上のHomebrewバイナリのパスを指定
-          path: /opt/homebrew/bin/swiftlint
-          key: ${{ runner.os }}-swiftlint-v2
-
-      # キャッシュがない場合のみインストール
       - name: Install SwiftLint
-        if: steps.cache-swiftlint.outputs.cache-hit != 'true'
         run: brew install swiftlint
 
       - name: Run SwiftLint
