@@ -8,14 +8,27 @@ on:
 
 jobs:
   SwiftLint:
-    # GitHubが提供する最新のMac環境を使用（標準でSwiftLintがインストールされています）
     runs-on: macos-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # Homebrewを高速化するためのキャッシュ設定（Apple Silicon環境）
+      - name: Cache SwiftLint
+        id: cache-swiftlint
+        uses: actions/cache@v4
+        with:
+          # Appleシリコン上のHomebrewバイナリのパスを指定
+          path: /opt/homebrew/bin/swiftlint
+          key: ${{ runner.os }}-swiftlint-v1
+
+      # キャッシュがない場合のみインストール
+      - name: Install SwiftLint
+        if: steps.cache-swiftlint.outputs.cache-hit != 'true'
+        run: brew install swiftlint
+
       - name: Run SwiftLint
-        # 外部Actionを使わず、システム標準のswiftlintコマンドを直接実行して高速化
-        # --strict: 規約違反をエラー扱いにしてビルドを失敗させ、商用品質を担保
-        # --reporter github-actions-logging: GitHubのアクション画面にエラー箇所を直接表示
+        # --strict: 違反をエラー扱いにしてマージをブロックする（商用品質維持）
+        # --reporter github-actions-logging: PR画面に直接注釈を表示する
         run: swiftlint lint --strict --reporter github-actions-logging
