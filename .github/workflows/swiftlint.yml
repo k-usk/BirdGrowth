@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+# Node.js 20の非推奨警告を解消し、将来の標準となる24系で動作させるための設定
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   SwiftLint:
     runs-on: macos-latest
