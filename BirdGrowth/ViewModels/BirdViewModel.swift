@@ -94,9 +94,7 @@ class BirdViewModel {
     /// ヘルスケアデータと歩数を同期する
     func syncSteps() async {
         await healthKitManager.fetchTodaySteps()
-        await MainActor.run {
-            self.steps = healthKitManager.todaySteps
-        }
+        self.steps = healthKitManager.todaySteps
     }
 
     /// デバッグ用：歩数をリセットし、鳥をランダムに入れ替える

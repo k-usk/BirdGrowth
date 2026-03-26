@@ -1,6 +1,6 @@
 # Role & Language
 - あなたはiOSアプリ「BirdGrowth」の開発をサポートする自律型AIエージェントです。
-- プランの提示、Issueへのコメント、Pull RequestのDescriptionなど、あらゆるコミュニケーションと説明はすべて「日本語（Japanese）」で行ってください。
+- プランの提示、Issueへのコメント、Pull RequestのDescription、**コミットメッセージ**など、あらゆるコミュニケーションと説明はすべて「日本語（Japanese）」で行ってください。
 - 実装を始める前に、必ず「どのような方針で実装するか」のプランを提示してください。
 
 # Execution Control & Safety (CRITICAL)

@@ -12,15 +12,15 @@ struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> Entry {
         BirdEntry(
             date: Date(),
-            steps: 5000,
-            birdName: "オキナインコ",
+            steps: 0,
+            birdName: "BirdGrowth",
             spriteFileName: "",
-            stageIndex: 1,
-            statusMessage: "こんにちは！"
+            stageIndex: 0,
+            statusMessage: "BirdGrowthへようこそ！"
         )
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
+    func getSnapshot(in context: Context, completion: @escaping (BirdEntry) -> Void) {
         let data = WidgetDataManager.fetch()
         let entry = BirdEntry(
             date: Date(),
@@ -33,7 +33,7 @@ struct Provider: TimelineProvider {
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<BirdEntry>) -> Void) {
         let data = WidgetDataManager.fetch()
         let entry = BirdEntry(
             date: Date(),
@@ -63,15 +63,11 @@ struct BirdWidgetEntryView: View {
     @Environment(\.widgetFamily)
     var family
 
-    var body: some View {
-        ZStack {
-            // 背景
-            LinearGradient(
-                colors: [Color.white, Color(red: 1.0, green: 0.98, blue: 0.94)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+    // アプリと共通の背景色
+    let bgColor = Color(red: 1.0, green: 0.98, blue: 0.94)
 
+    var body: some View {
+        Group {
             switch family {
             case .systemSmall:
                 smallView
@@ -81,89 +77,93 @@ struct BirdWidgetEntryView: View {
                 smallView
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .unredacted()
+        .privacySensitive(false)
     }
 
-    // 小サイズ用ビュー
+    // 小サイズ：イラスト、今日のステップ数
     var smallView: some View {
         VStack(spacing: 8) {
-            birdImage(size: 80)
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.white)
+                    .shadow(color: Color.brown.opacity(0.05), radius: 5, x: 0, y: 3)
+
+                birdImage(size: 100)
+            }
+            .frame(width: 100, height: 100)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .padding(.top, 10)
 
             VStack(spacing: 0) {
                 Text("\(entry.steps)")
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                    .foregroundStyle(.brown)
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundStyle(.brown.opacity(0.8))
                 Text("steps")
-                    .font(.system(size: 10, weight: .medium, design: .rounded))
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
                     .foregroundStyle(.brown.opacity(0.5))
             }
         }
-        .padding()
     }
 
-    // 大サイズ用ビュー
+    // 大サイズ：今日のステップ、イラスト、メッセージ、10段階のバー
     var largeView: some View {
-        VStack(spacing: 16) {
-            // 上部：鳥のイラストと名前
-            VStack(spacing: 4) {
-                birdImage(size: 120)
-                Text(entry.birdName)
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
+        VStack(spacing: 0) {
+            VStack(spacing: 2) {
+                Text("Today's Steps")
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .foregroundStyle(.brown.opacity(0.4))
+                Text("\(entry.steps)")
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
                     .foregroundStyle(.brown.opacity(0.8))
             }
+            .padding(.top, 20)
+            .foregroundStyle(.brown)
 
-            // 中央：メッセージ
+            // 中央：イラスト
+            ZStack {
+                RoundedRectangle(cornerRadius: 24)
+                    .fill(Color.white)
+                    .shadow(color: Color.brown.opacity(0.05), radius: 10, x: 0, y: 5)
+
+                birdImage(size: 240)
+            }
+            .frame(width: 240, height: 240)
+            .clipShape(RoundedRectangle(cornerRadius: 24))
+            .padding(.top, 4)
+            .padding(.bottom, 4)
+
+            Spacer()
+
+            // イラスト下：メッセージ
             Text(entry.statusMessage)
-                .font(.system(size: 16, weight: .medium, design: .serif))
+                .font(.system(size: 15, weight: .bold, design: .rounded))
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(Color.white)
-                        .shadow(color: .brown.opacity(0.1), radius: 4, x: 0, y: 2)
-                )
+                .padding(.horizontal, 10)
                 .foregroundStyle(.brown.opacity(0.7))
+                .padding(.bottom, 8)
 
-            // 下部：歩数とインジケータ
-            VStack(spacing: 10) {
-                HStack(alignment: .bottom, spacing: 4) {
-                    Text("\(entry.steps)")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundStyle(.brown)
-                    Text("/ 10,000 steps")
-                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        .foregroundStyle(.brown.opacity(0.5))
-                        .padding(.bottom, 6)
-                }
-
-                // カスタムゲージ
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        Capsule()
-                            .fill(.brown.opacity(0.1))
-                            .frame(height: 12)
+            // 下部：10段階のバー
+            VStack(spacing: 0) {
+                HStack(spacing: 4) {
+                    ForEach(0..<10, id: \.self) { index in
+                        let reached = index < (entry.steps / 1000)
+                        let activeColor: Color = {
+                            if entry.stageIndex == 0 { return .white } // 卵
+                            if entry.stageIndex == 1 { return .orange.opacity(0.6) } // ひな
+                            return Color(red: 1.0, green: 0.7, blue: 0.7) // 成鳥（ピンク）
+                        }()
 
                         Capsule()
-                            .fill(
-                                LinearGradient(
-                                    colors: [.orange, .yellow],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                            .frame(
-                                width: geometry.size.width
-                                    * CGFloat(min(Double(entry.steps) / 10000.0, 1.0)),
-                                height: 12
-                            )
-                            .shadow(color: .orange.opacity(0.3), radius: 4, x: 0, y: 2)
+                            .fill(reached ? activeColor : Color.brown.opacity(0.1))
+                            .frame(height: 3)
                     }
                 }
-                .frame(height: 12)
-                .padding(.horizontal, 20)
+                .frame(width: 140) // 全体の横幅を縮める
             }
+            .padding(.bottom, 28)
         }
-        .padding()
     }
 
     @ViewBuilder
@@ -175,7 +175,7 @@ struct BirdWidgetEntryView: View {
                 .frame(width: size * 3, height: size * 3)
                 .offset(x: size * CGFloat(1 - entry.stageIndex))
                 .frame(width: size, height: size)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .clipped()
         } else {
             Image(systemName: "bird.fill")
                 .font(.system(size: size * 0.5))
@@ -186,7 +186,17 @@ struct BirdWidgetEntryView: View {
     private func loadSprite() -> UIImage? {
         guard !entry.spriteFileName.isEmpty else { return nil }
 
-        // Spritesフォルダ内のURLを取得
+        // 1. 直接名前で試行 (Target Membership が正しく設定されていればこれで見える)
+        if let image = UIImage(named: entry.spriteFileName) {
+            return image
+        }
+
+        // 2. Folder Reference 名を含めて試行
+        if let image = UIImage(named: "Sprites/\(entry.spriteFileName)") {
+            return image
+        }
+
+        // 3. Bundle URL で明示的に検索
         guard let url = Bundle.main.url(
             forResource: entry.spriteFileName,
             withExtension: nil,
@@ -199,45 +209,21 @@ struct BirdWidgetEntryView: View {
 
 struct BirdWidget: Widget {
     let kind: String = "BirdWidget"
+    let bgColor = Color(red: 1.0, green: 0.98, blue: 0.94)
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             if #available(iOS 17.0, *) {
                 BirdWidgetEntryView(entry: entry)
-                    .containerBackground(.fill.tertiary, for: .widget)
+                    .containerBackground(bgColor, for: .widget)
             } else {
                 BirdWidgetEntryView(entry: entry)
-                    .background()
+                    .padding()
+                    .background(bgColor)
             }
         }
         .configurationDisplayName("BirdGrowth")
         .description("あなたの鳥さんの成長をホーム画面で見守れます。")
         .supportedFamilies([.systemSmall, .systemLarge])
     }
-}
-
-#Preview(as: .systemSmall) {
-    BirdWidget()
-} timeline: {
-    BirdEntry(
-        date: .now,
-        steps: 3500,
-        birdName: "オカメインコ",
-        spriteFileName: "",
-        stageIndex: 1,
-        statusMessage: "元気に歩こう！"
-    )
-}
-
-#Preview(as: .systemLarge) {
-    BirdWidget()
-} timeline: {
-    BirdEntry(
-        date: .now,
-        steps: 7200,
-        birdName: "オカメインコ",
-        spriteFileName: "",
-        stageIndex: 1,
-        statusMessage: "あと少しで1万歩だよ！\nがんばって！"
-    )
 }
