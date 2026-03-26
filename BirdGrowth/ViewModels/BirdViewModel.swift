@@ -18,6 +18,8 @@ class BirdViewModel {
     var availableSprites: [URL] = []
     var currentSpriteURL: URL?
 
+    private let healthKitManager = HealthKitManager.shared
+
     // 現在表示中のランダムメッセージ
     private(set) var currentMessage: String = "しずかだね"
     private var lastSegmentIndex: Int = -1
@@ -78,6 +80,20 @@ class BirdViewModel {
         availableSprites = urls
         currentSpriteURL = urls.randomElement()
         updateMessageIfNeeded()
+
+        // 初回起動時やリセット時にHealthKitの権限リクエストと同期を試みる
+        Task {
+            try? await healthKitManager.requestAuthorization()
+            await syncSteps()
+        }
+    }
+
+    /// ヘルスケアデータと歩数を同期する
+    func syncSteps() async {
+        await healthKitManager.fetchTodaySteps()
+        await MainActor.run {
+            self.steps = healthKitManager.todaySteps
+        }
     }
 
     /// デバッグ用：歩数をリセットし、鳥をランダムに入れ替える
