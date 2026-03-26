@@ -8,6 +8,7 @@ import HealthKit
 import Observation
 
 /// ヘルスケア（HealthKit）との連携を管理するマネージャ
+@MainActor
 @Observable
 class HealthKitManager {
     static let shared = HealthKitManager()
@@ -66,7 +67,7 @@ class HealthKitManager {
                 }
 
                 let steps = Int(sum.doubleValue(for: HKUnit.count()))
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     self.todaySteps = steps
                     continuation.resume()
                 }

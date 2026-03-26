@@ -5,14 +5,17 @@
 
 import Observation
 import SwiftUI
+import WidgetKit
 
 /// 鳥の成長に関わるビジネスロジックと状態を管理するViewModel
+@MainActor
 @Observable
 class BirdViewModel {
     // MARK: - State
     var steps: Int = 0 {
         didSet {
             updateMessageIfNeeded()
+            updateWidgetData()
         }
     }
     var availableSprites: [URL] = []
@@ -102,5 +105,16 @@ class BirdViewModel {
         lastSegmentIndex = -1 // リセットして初回メッセージが出るように
         currentSpriteURL = availableSprites.randomElement()
         updateMessageIfNeeded()
+    }
+
+    /// ウィジェット用のデータを更新し、リロードを要求する
+    private func updateWidgetData() {
+        WidgetDataManager.save(
+            steps: steps,
+            birdName: currentBirdName,
+            spriteFileName: currentSpriteURL?.lastPathComponent ?? "",
+            stageIndex: stageIndex
+        )
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
