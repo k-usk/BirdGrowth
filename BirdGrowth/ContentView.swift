@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct ContentView: View {
     @State private var viewModel = BirdViewModel()
@@ -48,7 +49,9 @@ struct ContentView: View {
 
                 // デバッグ用（控えめなボタン）
                 HStack(spacing: 30) {
-                    Button(action: { viewModel.steps += viewModel.stepIncrement }, label: {
+                    Button(action: {
+                        viewModel.steps += viewModel.stepIncrement
+                    }, label: {
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: 24))
                     })

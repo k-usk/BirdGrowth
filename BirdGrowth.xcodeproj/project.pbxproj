@@ -8,22 +8,91 @@
 
 /* Begin PBXBuildFile section */
 		7EC29B102F7171F200EE923E /* Sprites in Resources */ = {isa = PBXBuildFile; fileRef = 7EC29B0F2F7171F200EE923E /* Sprites */; };
+		7EC29B272F75635B00EE923E /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC29B262F75635B00EE923E /* WidgetKit.framework */; };
+		7EC29B292F75635B00EE923E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC29B282F75635B00EE923E /* SwiftUI.framework */; };
+		7EC29B342F75635D00EE923E /* BirdWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7EC29B242F75635A00EE923E /* BirdWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7EC29B3F2F75658A00EE923E /* Sprites in Resources */ = {isa = PBXBuildFile; fileRef = 7EC29B0F2F7171F200EE923E /* Sprites */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7EC29B322F75635D00EE923E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7ED16F942F6C318800B58893 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7EC29B232F75635A00EE923E;
+			remoteInfo = BirdWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7EC29B392F75635D00EE923E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7EC29B342F75635D00EE923E /* BirdWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		7EC29B0F2F7171F200EE923E /* Sprites */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sprites; sourceTree = "<group>"; };
+		7EC29B242F75635A00EE923E /* BirdWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BirdWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EC29B262F75635B00EE923E /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		7EC29B282F75635B00EE923E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		7EC29B3A2F7563DC00EE923E /* BirdWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BirdWidgetExtension.entitlements; sourceTree = "<group>"; };
 		7ED16F9C2F6C318800B58893 /* BirdGrowth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BirdGrowth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		7EC29B352F75635D00EE923E /* Exceptions for "BirdWidget" folder in "BirdWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 7EC29B232F75635A00EE923E /* BirdWidgetExtension */;
+		};
+		7EC29B3E2F75657F00EE923E /* Exceptions for "BirdGrowth" folder in "BirdWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Models/WidgetDataManager.swift,
+			);
+			target = 7EC29B232F75635A00EE923E /* BirdWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		7EC29B2A2F75635B00EE923E /* BirdWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7EC29B352F75635D00EE923E /* Exceptions for "BirdWidget" folder in "BirdWidgetExtension" target */,
+			);
+			path = BirdWidget;
+			sourceTree = "<group>";
+		};
 		7ED16F9E2F6C318800B58893 /* BirdGrowth */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7EC29B3E2F75657F00EE923E /* Exceptions for "BirdGrowth" folder in "BirdWidgetExtension" target */,
+			);
 			path = BirdGrowth;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7EC29B212F75635A00EE923E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EC29B292F75635B00EE923E /* SwiftUI.framework in Frameworks */,
+				7EC29B272F75635B00EE923E /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7ED16F992F6C318800B58893 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -34,11 +103,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7EC29B252F75635B00EE923E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7EC29B262F75635B00EE923E /* WidgetKit.framework */,
+				7EC29B282F75635B00EE923E /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7ED16F932F6C318800B58893 = {
 			isa = PBXGroup;
 			children = (
+				7EC29B3A2F7563DC00EE923E /* BirdWidgetExtension.entitlements */,
 				7EC29B0F2F7171F200EE923E /* Sprites */,
 				7ED16F9E2F6C318800B58893 /* BirdGrowth */,
+				7EC29B2A2F75635B00EE923E /* BirdWidget */,
+				7EC29B252F75635B00EE923E /* Frameworks */,
 				7ED16F9D2F6C318800B58893 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -47,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				7ED16F9C2F6C318800B58893 /* BirdGrowth.app */,
+				7EC29B242F75635A00EE923E /* BirdWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -54,6 +136,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7EC29B232F75635A00EE923E /* BirdWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7EC29B362F75635D00EE923E /* Build configuration list for PBXNativeTarget "BirdWidgetExtension" */;
+			buildPhases = (
+				7EC29B202F75635A00EE923E /* Sources */,
+				7EC29B212F75635A00EE923E /* Frameworks */,
+				7EC29B222F75635A00EE923E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				7EC29B2A2F75635B00EE923E /* BirdWidget */,
+			);
+			name = BirdWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = BirdWidgetExtension;
+			productReference = 7EC29B242F75635A00EE923E /* BirdWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		7ED16F9B2F6C318800B58893 /* BirdGrowth */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7ED16FAB2F6C318A00B58893 /* Build configuration list for PBXNativeTarget "BirdGrowth" */;
@@ -61,10 +165,12 @@
 				7ED16F982F6C318800B58893 /* Sources */,
 				7ED16F992F6C318800B58893 /* Frameworks */,
 				7ED16F9A2F6C318800B58893 /* Resources */,
+				7EC29B392F75635D00EE923E /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7EC29B332F75635D00EE923E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				7ED16F9E2F6C318800B58893 /* BirdGrowth */,
@@ -86,6 +192,9 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					7EC29B232F75635A00EE923E = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					7ED16F9B2F6C318800B58893 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -106,11 +215,20 @@
 			projectRoot = "";
 			targets = (
 				7ED16F9B2F6C318800B58893 /* BirdGrowth */,
+				7EC29B232F75635A00EE923E /* BirdWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7EC29B222F75635A00EE923E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EC29B3F2F75658A00EE923E /* Sprites in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7ED16F9A2F6C318800B58893 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -122,6 +240,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7EC29B202F75635A00EE923E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7ED16F982F6C318800B58893 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -131,7 +256,76 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		7EC29B332F75635D00EE923E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7EC29B232F75635A00EE923E /* BirdWidgetExtension */;
+			targetProxy = 7EC29B322F75635D00EE923E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		7EC29B372F75635D00EE923E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = BirdWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4DUG4WDLMT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BirdWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BirdWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cluppou.BirdGrowth.BirdWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7EC29B382F75635D00EE923E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = BirdWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4DUG4WDLMT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BirdWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BirdWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cluppou.BirdGrowth.BirdWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		7ED16FA92F6C318A00B58893 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -255,8 +449,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BirdGrowth/Preview Content\"";
+				DEVELOPMENT_TEAM = 4DUG4WDLMT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "鳥の成長に反映させるため、歩数データを使用します。";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -292,8 +488,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BirdGrowth/Preview Content\"";
+				DEVELOPMENT_TEAM = 4DUG4WDLMT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "鳥の成長に反映させるため、歩数データを使用します。";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -323,6 +521,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7EC29B362F75635D00EE923E /* Build configuration list for PBXNativeTarget "BirdWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7EC29B372F75635D00EE923E /* Debug */,
+				7EC29B382F75635D00EE923E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7ED16F972F6C318800B58893 /* Build configuration list for PBXProject "BirdGrowth" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

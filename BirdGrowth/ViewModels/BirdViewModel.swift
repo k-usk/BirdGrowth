@@ -5,18 +5,23 @@
 
 import Observation
 import SwiftUI
+import WidgetKit
 
 /// 鳥の成長に関わるビジネスロジックと状態を管理するViewModel
+@MainActor
 @Observable
 class BirdViewModel {
     // MARK: - State
     var steps: Int = 0 {
         didSet {
             updateMessageIfNeeded()
+            updateWidgetData()
         }
     }
     var availableSprites: [URL] = []
     var currentSpriteURL: URL?
+
+    private let healthKitManager = HealthKitManager.shared
 
     // 現在表示中のランダムメッセージ
     private(set) var currentMessage: String = "しずかだね"
@@ -78,6 +83,18 @@ class BirdViewModel {
         availableSprites = urls
         currentSpriteURL = urls.randomElement()
         updateMessageIfNeeded()
+
+        // 初回起動時やリセット時にHealthKitの権限リクエストと同期を試みる
+        Task {
+            try? await healthKitManager.requestAuthorization()
+            await syncSteps()
+        }
+    }
+
+    /// ヘルスケアデータと歩数を同期する
+    func syncSteps() async {
+        await healthKitManager.fetchTodaySteps()
+        self.steps = healthKitManager.todaySteps
     }
 
     /// デバッグ用：歩数をリセットし、鳥をランダムに入れ替える
@@ -86,5 +103,17 @@ class BirdViewModel {
         lastSegmentIndex = -1 // リセットして初回メッセージが出るように
         currentSpriteURL = availableSprites.randomElement()
         updateMessageIfNeeded()
+    }
+
+    /// ウィジェット用のデータを更新し、リロードを要求する
+    private func updateWidgetData() {
+        WidgetDataManager.save(
+            steps: steps,
+            birdName: currentBirdName,
+            spriteFileName: currentSpriteURL?.lastPathComponent ?? "",
+            stageIndex: stageIndex,
+            statusMessage: statusMessage
+        )
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
