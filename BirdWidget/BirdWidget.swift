@@ -10,7 +10,14 @@ struct Provider: TimelineProvider {
     typealias Entry = BirdEntry
 
     func placeholder(in context: Context) -> Entry {
-        BirdEntry(date: Date(), steps: 5000, birdName: "オキナインコ", spriteFileName: "", stageIndex: 1)
+        BirdEntry(
+            date: Date(),
+            steps: 5000,
+            birdName: "オキナインコ",
+            spriteFileName: "",
+            stageIndex: 1,
+            statusMessage: "こんにちは！"
+        )
     }
 
     func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
@@ -20,7 +27,8 @@ struct Provider: TimelineProvider {
             steps: data.steps,
             birdName: data.birdName,
             spriteFileName: data.spriteFileName,
-            stageIndex: data.stageIndex
+            stageIndex: data.stageIndex,
+            statusMessage: data.statusMessage
         )
         completion(entry)
     }
@@ -32,11 +40,10 @@ struct Provider: TimelineProvider {
             steps: data.steps,
             birdName: data.birdName,
             spriteFileName: data.spriteFileName,
-            stageIndex: data.stageIndex
+            stageIndex: data.stageIndex,
+            statusMessage: data.statusMessage
         )
 
-        // ウィジェットはアプリ側から reloadAllTimelines() で更新されるため、
-        // ポリシーは .never（または長時間）で問題ありません。
         let timeline = Timeline(entries: [entry], policy: .never)
         completion(timeline)
     }
@@ -48,6 +55,7 @@ struct BirdEntry: TimelineEntry {
     let birdName: String
     let spriteFileName: String
     let stageIndex: Int
+    let statusMessage: String
 }
 
 struct BirdWidgetEntryView: View {
@@ -64,10 +72,13 @@ struct BirdWidgetEntryView: View {
                 endPoint: .bottomTrailing
             )
 
-            if family == .systemSmall {
+            switch family {
+            case .systemSmall:
                 smallView
-            } else {
-                mediumView
+            case .systemLarge:
+                largeView
+            default:
+                smallView
             }
         }
     }
@@ -89,29 +100,67 @@ struct BirdWidgetEntryView: View {
         .padding()
     }
 
-    // 中サイズ用ビュー
-    var mediumView: some View {
-        HStack(spacing: 20) {
-            birdImage(size: 100)
-
-            VStack(alignment: .leading, spacing: 8) {
+    // 大サイズ用ビュー
+    var largeView: some View {
+        VStack(spacing: 16) {
+            // 上部：鳥のイラストと名前
+            VStack(spacing: 4) {
+                birdImage(size: 120)
                 Text(entry.birdName)
-                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
                     .foregroundStyle(.brown.opacity(0.8))
+            }
 
+            // 中央：メッセージ
+            Text(entry.statusMessage)
+                .font(.system(size: 16, weight: .medium, design: .serif))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color.white)
+                        .shadow(color: .brown.opacity(0.1), radius: 4, x: 0, y: 2)
+                )
+                .foregroundStyle(.brown.opacity(0.7))
+
+            // 下部：歩数とインジケータ
+            VStack(spacing: 10) {
                 HStack(alignment: .bottom, spacing: 4) {
                     Text("\(entry.steps)")
                         .font(.system(size: 32, weight: .bold, design: .rounded))
                         .foregroundStyle(.brown)
-                    Text("steps")
+                    Text("/ 10,000 steps")
                         .font(.system(size: 14, weight: .medium, design: .rounded))
                         .foregroundStyle(.brown.opacity(0.5))
                         .padding(.bottom, 6)
                 }
 
-                Text("今日もいっしょに歩こう！")
-                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .foregroundStyle(.brown.opacity(0.4))
+                // カスタムゲージ
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        Capsule()
+                            .fill(.brown.opacity(0.1))
+                            .frame(height: 12)
+
+                        Capsule()
+                            .fill(
+                                LinearGradient(
+                                    colors: [.orange, .yellow],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .frame(
+                                width: geometry.size.width
+                                    * CGFloat(min(Double(entry.steps) / 10000.0, 1.0)),
+                                height: 12
+                            )
+                            .shadow(color: .orange.opacity(0.3), radius: 4, x: 0, y: 2)
+                    }
+                }
+                .frame(height: 12)
+                .padding(.horizontal, 20)
             }
         }
         .padding()
@@ -163,12 +212,32 @@ struct BirdWidget: Widget {
         }
         .configurationDisplayName("BirdGrowth")
         .description("あなたの鳥さんの成長をホーム画面で見守れます。")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemLarge])
     }
 }
 
 #Preview(as: .systemSmall) {
     BirdWidget()
 } timeline: {
-    BirdEntry(date: .now, steps: 3500, birdName: "オカメインコ", spriteFileName: "", stageIndex: 1)
+    BirdEntry(
+        date: .now,
+        steps: 3500,
+        birdName: "オカメインコ",
+        spriteFileName: "",
+        stageIndex: 1,
+        statusMessage: "元気に歩こう！"
+    )
+}
+
+#Preview(as: .systemLarge) {
+    BirdWidget()
+} timeline: {
+    BirdEntry(
+        date: .now,
+        steps: 7200,
+        birdName: "オカメインコ",
+        spriteFileName: "",
+        stageIndex: 1,
+        statusMessage: "あと少しで1万歩だよ！\nがんばって！"
+    )
 }

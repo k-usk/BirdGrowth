@@ -113,7 +113,8 @@ class BirdViewModel {
             steps: steps,
             birdName: currentBirdName,
             spriteFileName: currentSpriteURL?.lastPathComponent ?? "",
-            stageIndex: stageIndex
+            stageIndex: stageIndex,
+            statusMessage: statusMessage
         )
         WidgetCenter.shared.reloadAllTimelines()
     }
