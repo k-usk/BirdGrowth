@@ -28,14 +28,18 @@ jobs:
 
   test:
     name: Unit Tests
-    runs-on: macos-latest
+    # macOS 15 (Sequoia) を明示的に指定
+    runs-on: macos-15
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Select Xcode 16.2
+        # Swift Testing が動作する Xcode 16.2 を明示的に選択
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+
       - name: Run Tests
-        # シミュレータ起動待ちを避けるため、作成済みのシミュレータを指定
-        # destination は iPhone 16 を使用
+        # iPhone 16 シミュレータを使用
         run: |
           xcodebuild test \
             -project BirdGrowth.xcodeproj \
