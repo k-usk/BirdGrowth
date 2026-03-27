@@ -1,0 +1,44 @@
+name: CI (Lint & Test)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Node.js 20の非推奨警告を解消し、将来の標準となる24系で動作させるための設定
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  lint:
+    name: SwiftLint
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: Run SwiftLint
+        # --strict: 違反をエラー扱いにしてマージをブロックする
+        # --reporter github-actions-logging: PR画面に直接注釈を表示する
+        run: swiftlint lint --strict --reporter github-actions-logging
+
+  test:
+    name: Unit Tests
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Tests
+        # シミュレータ起動待ちを避けるため、作成済みのシミュレータを指定
+        # destination は iPhone 16 を使用
+        run: |
+          xcodebuild test \
+            -project BirdGrowth.xcodeproj \
+            -scheme BirdGrowth \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -resultBundlePath TestResults.xcresult
