@@ -43,7 +43,13 @@ struct BirdNestView: View {
                         .interpolation(.none)
                         .resizable()
                         .frame(width: frameSize * 3, height: frameSize * 3)
-                        .offset(x: frameSize * CGFloat(1 - stageIndex))
+                        .offset(x: {
+                            let baseOffset = frameSize * CGFloat(1 - stageIndex)
+                            let fineTune: CGFloat = 0
+                            if stageIndex == 0 { return baseOffset + fineTune } // 卵を右に
+                            if stageIndex == 2 { return baseOffset - fineTune } // 成鳥を左に
+                            return baseOffset
+                        }())
                 } else {
                     Image(systemName: "bird.fill")
                         .font(.system(size: 60))

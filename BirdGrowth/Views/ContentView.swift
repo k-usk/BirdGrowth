@@ -40,11 +40,7 @@ struct ContentView: View {
                 Spacer()
 
                 // デバッグ用コントロール
-                DebugControlsView(
-                    steps: $viewModel.steps,
-                    stepIncrement: viewModel.stepIncrement,
-                    onReset: { viewModel.resetAndRandomize() }
-                )
+                DebugControlsView(viewModel: viewModel)
             }
         }
         .onAppear {

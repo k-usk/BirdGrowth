@@ -7,20 +7,36 @@ import SwiftUI
 
 /// 開発・テスト用のデバッグコントロールを表示するコンポーネント
 struct DebugControlsView: View {
-    @Binding var steps: Int
-    let stepIncrement: Int
-    let onReset: () -> Void
+    @Bindable var viewModel: BirdViewModel
 
     var body: some View {
         HStack(spacing: 30) {
+            // 画像セレクター
+            Menu {
+                Button("ランダム（通常）") {
+                    viewModel.selectedSpriteURL = nil
+                }
+                Divider()
+                ForEach(viewModel.availableSprites, id: \.self) { url in
+                    Button(url.deletingPathExtension().lastPathComponent) {
+                        viewModel.selectedSpriteURL = url
+                    }
+                }
+            } label: {
+                Image(systemName: "photo.on.rectangle.angled")
+                    .font(.system(size: 22))
+            }
+
+            // 歩数追加ボタン
             Button(action: {
-                steps += stepIncrement
+                viewModel.steps += viewModel.stepIncrement
             }, label: {
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 24))
             })
 
-            Button(action: { onReset() }, label: {
+            // リセットボタン
+            Button(action: { viewModel.resetAndRandomize() }, label: {
                 Image(systemName: "arrow.counterclockwise.circle.fill")
                     .font(.system(size: 24))
             })
@@ -31,11 +47,6 @@ struct DebugControlsView: View {
 }
 
 #Preview {
-    struct PreviewWrapper: View {
-        @State private var steps = 5000
-        var body: some View {
-            DebugControlsView(steps: $steps, stepIncrement: 1000, onReset: {})
-        }
-    }
-    return PreviewWrapper()
+    DebugControlsView(viewModel: BirdViewModel())
+        .padding()
 }

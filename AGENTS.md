@@ -52,6 +52,6 @@
 - これにより、一日の成果を技術ブログ (`blog/YYYY-MM-DD.md`) と照らし合わせやすく、日次での進捗を明確に保つ。
 
 # Image Generation Prompt Rule
-- **基本ルール**: 画像を生成する依頼を受けた際、システム・プロンプトとして以下の英語テンプレートを必ず裏で組み立ててから生成を実行してください（アプリ内の1/3クロップ用の白背景スプライトシート形式を保つため）。
-- **ベース・プロンプト**: `8-bit pixel art, cute [COLOR] [BIRD_TYPE]. 16:9 aspect ratio, solid pure white background. Three stages of growth horizontally aligned with wide empty space between them. Left: egg. Center: baby chick. Right: adult bird. Make sure they are perfectly separated with huge gaps between each other so they do not overlap when divided into 3 equal square frames.`
+- **基本ルール**: 画像を生成する依頼を受けた際、システム・プロンプトとして以下の英語テンプレートを必ず裏で組み立ててから生成を実行してください（アプリ内の1/3クロップ表示で「はみ出し・伸び・ズレ」を完全に防ぐため）。
+- **ベース・プロンプト**: `8-bit pixel art, cute [COLOR] [BIRD_TYPE]. SQUARE (1:1) aspect ratio. SOLID PURE WHITE BACKGROUND #FFFFFF. DRAW A THIN HAIRLINE-THICK 3x3 GRID OVER THE WHOLE IMAGE USING THE COLOR #FDFAF7 (ULTRA-FAINT). PLACE THE 3 STAGES (egg, baby chick, adult) IN THE MIDDLE THREE BOXES ONLY. EACH CHARACTER MUST BE CENTERED IN ITS BOX AND NOT TOUCH THE GRID LINES. High contrast, clean pixel edges.`
 - **ランダムバリエーションの強制 (Constraint)**: `Even if the same bird type and color are requested, randomly change the pose, eye shape, body proportion slightly, or add a completely random small variation (like a ruffled head feather, different wing position, tiny blushing cheeks, or a subtle unique pattern) so EVERY generation is unique and slightly different.`

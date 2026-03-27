@@ -85,12 +85,12 @@ struct BirdViewModelTests {
         
         // ダミーのURLを設定
         let url = URL(fileURLWithPath: "/path/to/blue_parrot#1.png")
-        viewModel.currentSpriteURL = url
+        viewModel.selectedSpriteURL = url
         
         #expect(viewModel.currentBirdName == "blue parrot")
         
         let urlWithSpaces = URL(fileURLWithPath: "/path/to/Red_Robin.png")
-        viewModel.currentSpriteURL = urlWithSpaces
+        viewModel.selectedSpriteURL = urlWithSpaces
         #expect(viewModel.currentBirdName == "Red Robin")
     }
 

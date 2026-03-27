@@ -19,7 +19,17 @@ class BirdViewModel {
         }
     }
     var availableSprites: [URL] = []
-    var currentSpriteURL: URL?
+    private var randomSpriteURL: URL?
+    var selectedSpriteURL: URL? {
+        didSet {
+            updateWidgetData()
+        }
+    }
+
+    /// 現在表示しているスプライトURL（手動選択があればそれを優先）
+    var currentSpriteURL: URL? {
+        selectedSpriteURL ?? randomSpriteURL
+    }
 
     private let healthKitManager = HealthKitManager.shared
 
@@ -81,7 +91,7 @@ class BirdViewModel {
     func setupSprites() {
         let urls = Bundle.main.urls(forResourcesWithExtension: "png", subdirectory: "Sprites") ?? []
         availableSprites = urls
-        currentSpriteURL = urls.randomElement()
+        randomSpriteURL = urls.randomElement()
         updateMessageIfNeeded()
 
         // 初回起動時やリセット時にHealthKitの権限リクエストと同期を試みる
@@ -101,7 +111,8 @@ class BirdViewModel {
     func resetAndRandomize() {
         steps = 0
         lastSegmentIndex = -1 // リセットして初回メッセージが出るように
-        currentSpriteURL = availableSprites.randomElement()
+        randomSpriteURL = availableSprites.randomElement()
+        selectedSpriteURL = nil // 手動選択もリセット
         updateMessageIfNeeded()
     }
 
