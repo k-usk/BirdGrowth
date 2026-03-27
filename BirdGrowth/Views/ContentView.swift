@@ -11,16 +11,8 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            // 背景：優しく暖かいパステルカラー
-            LinearGradient(
-                colors: [
-                    Color(red: 1.0, green: 0.98, blue: 0.94), // クリーム色
-                    Color(red: 1.0, green: 0.94, blue: 0.94)  // ほんのりピンク
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            // 背景コンポーネント
+            BackgroundView()
 
             VStack(spacing: 20) {
                 Spacer(minLength: 20)
@@ -47,22 +39,12 @@ struct ContentView: View {
 
                 Spacer()
 
-                // デバッグ用（控えめなボタン）
-                HStack(spacing: 30) {
-                    Button(action: {
-                        viewModel.steps += viewModel.stepIncrement
-                    }, label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 24))
-                    })
-
-                    Button(action: { viewModel.resetAndRandomize() }, label: {
-                        Image(systemName: "arrow.counterclockwise.circle.fill")
-                            .font(.system(size: 24))
-                    })
-                }
-                .foregroundStyle(Color.brown.opacity(0.15))
-                .padding(.bottom, 20)
+                // デバッグ用コントロール
+                DebugControlsView(
+                    steps: $viewModel.steps,
+                    stepIncrement: viewModel.stepIncrement,
+                    onReset: { viewModel.resetAndRandomize() }
+                )
             }
         }
         .onAppear {
