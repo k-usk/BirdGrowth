@@ -12,6 +12,7 @@
 		7EC29B292F75635B00EE923E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC29B282F75635B00EE923E /* SwiftUI.framework */; };
 		7EC29B342F75635D00EE923E /* BirdWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7EC29B242F75635A00EE923E /* BirdWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7EC29B3F2F75658A00EE923E /* Sprites in Resources */ = {isa = PBXBuildFile; fileRef = 7EC29B0F2F7171F200EE923E /* Sprites */; };
+		7EC29B7E2F764A5600EE923E /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = 7EC29B7D2F764A5600EE923E /* ViewInspector */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -21,6 +22,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 7EC29B232F75635A00EE923E;
 			remoteInfo = BirdWidgetExtension;
+		};
+		7EC29B732F76482E00EE923E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7ED16F942F6C318800B58893 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7ED16F9B2F6C318800B58893;
+			remoteInfo = BirdGrowth;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -44,6 +52,7 @@
 		7EC29B262F75635B00EE923E /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		7EC29B282F75635B00EE923E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		7EC29B3A2F7563DC00EE923E /* BirdWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BirdWidgetExtension.entitlements; sourceTree = "<group>"; };
+		7EC29B6F2F76482E00EE923E /* BirdGrowthTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BirdGrowthTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED16F9C2F6C318800B58893 /* BirdGrowth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BirdGrowth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -73,6 +82,11 @@
 			path = BirdWidget;
 			sourceTree = "<group>";
 		};
+		7EC29B702F76482E00EE923E /* BirdGrowthTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = BirdGrowthTests;
+			sourceTree = "<group>";
+		};
 		7ED16F9E2F6C318800B58893 /* BirdGrowth */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -90,6 +104,14 @@
 			files = (
 				7EC29B292F75635B00EE923E /* SwiftUI.framework in Frameworks */,
 				7EC29B272F75635B00EE923E /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7EC29B6C2F76482E00EE923E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EC29B7E2F764A5600EE923E /* ViewInspector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +141,7 @@
 				7EC29B0F2F7171F200EE923E /* Sprites */,
 				7ED16F9E2F6C318800B58893 /* BirdGrowth */,
 				7EC29B2A2F75635B00EE923E /* BirdWidget */,
+				7EC29B702F76482E00EE923E /* BirdGrowthTests */,
 				7EC29B252F75635B00EE923E /* Frameworks */,
 				7ED16F9D2F6C318800B58893 /* Products */,
 			);
@@ -129,6 +152,7 @@
 			children = (
 				7ED16F9C2F6C318800B58893 /* BirdGrowth.app */,
 				7EC29B242F75635A00EE923E /* BirdWidgetExtension.appex */,
+				7EC29B6F2F76482E00EE923E /* BirdGrowthTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,6 +181,30 @@
 			productName = BirdWidgetExtension;
 			productReference = 7EC29B242F75635A00EE923E /* BirdWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		7EC29B6E2F76482E00EE923E /* BirdGrowthTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7EC29B752F76482E00EE923E /* Build configuration list for PBXNativeTarget "BirdGrowthTests" */;
+			buildPhases = (
+				7EC29B6B2F76482E00EE923E /* Sources */,
+				7EC29B6C2F76482E00EE923E /* Frameworks */,
+				7EC29B6D2F76482E00EE923E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7EC29B742F76482E00EE923E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7EC29B702F76482E00EE923E /* BirdGrowthTests */,
+			);
+			name = BirdGrowthTests;
+			packageProductDependencies = (
+				7EC29B7D2F764A5600EE923E /* ViewInspector */,
+			);
+			productName = BirdGrowthTests;
+			productReference = 7EC29B6F2F76482E00EE923E /* BirdGrowthTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		7ED16F9B2F6C318800B58893 /* BirdGrowth */ = {
 			isa = PBXNativeTarget;
@@ -195,6 +243,10 @@
 					7EC29B232F75635A00EE923E = {
 						CreatedOnToolsVersion = 16.2;
 					};
+					7EC29B6E2F76482E00EE923E = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 7ED16F9B2F6C318800B58893;
+					};
 					7ED16F9B2F6C318800B58893 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -209,6 +261,9 @@
 			);
 			mainGroup = 7ED16F932F6C318800B58893;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7EC29B7C2F764A5600EE923E /* XCRemoteSwiftPackageReference "ViewInspector" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7ED16F9D2F6C318800B58893 /* Products */;
 			projectDirPath = "";
@@ -216,6 +271,7 @@
 			targets = (
 				7ED16F9B2F6C318800B58893 /* BirdGrowth */,
 				7EC29B232F75635A00EE923E /* BirdWidgetExtension */,
+				7EC29B6E2F76482E00EE923E /* BirdGrowthTests */,
 			);
 		};
 /* End PBXProject section */
@@ -226,6 +282,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7EC29B3F2F75658A00EE923E /* Sprites in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7EC29B6D2F76482E00EE923E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +310,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7EC29B6B2F76482E00EE923E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7ED16F982F6C318800B58893 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -261,6 +331,11 @@
 			isa = PBXTargetDependency;
 			target = 7EC29B232F75635A00EE923E /* BirdWidgetExtension */;
 			targetProxy = 7EC29B322F75635D00EE923E /* PBXContainerItemProxy */;
+		};
+		7EC29B742F76482E00EE923E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7ED16F9B2F6C318800B58893 /* BirdGrowth */;
+			targetProxy = 7EC29B732F76482E00EE923E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -322,6 +397,47 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7EC29B762F76482E00EE923E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4DUG4WDLMT;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cluppou.BirdGrowth.BirdGrowthTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BirdGrowth.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BirdGrowth";
+			};
+			name = Debug;
+		};
+		7EC29B772F76482E00EE923E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4DUG4WDLMT;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cluppou.BirdGrowth.BirdGrowthTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BirdGrowth.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BirdGrowth";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -530,6 +646,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		7EC29B752F76482E00EE923E /* Build configuration list for PBXNativeTarget "BirdGrowthTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7EC29B762F76482E00EE923E /* Debug */,
+				7EC29B772F76482E00EE923E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7ED16F972F6C318800B58893 /* Build configuration list for PBXProject "BirdGrowth" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -549,6 +674,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7EC29B7C2F764A5600EE923E /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nalexn/ViewInspector";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7EC29B7D2F764A5600EE923E /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7EC29B7C2F764A5600EE923E /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7ED16F942F6C318800B58893 /* Project object */;
 }
