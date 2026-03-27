@@ -35,8 +35,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Select Xcode 16.0
-        # Xcode 16.0 を選択
-        run: sudo xcode-select -s /Applications/Xcode_16.0.app/Contents/Developer
+        # Xcode 16.0 (macos-14 規格) を選択
+        run: sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
 
       - name: Run Tests
         # iPhone 15 シミュレータを使用
