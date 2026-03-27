@@ -21,7 +21,11 @@
 - **SwiftUI**: 複雑なサードパーティ製ライブラリの導入は避け、SwiftUIの標準機能を最大限に活用・優先してください。
 - **アーキテクチャ**: MVVM（Model-View-ViewModel）パターンを基本とします。データとUIを明確に分離し、View内に複雑な計算ロジック（歩数の計算や鳥の進化判定など）を直接書かず、ViewModelに委譲してください。
 - **状態管理**: iOS 17以降の標準に則り、状態管理には `@Observable` マクロを優先して使用してください。
-- **品質管理 (CRITICAL)**: コードの変更後および **コミット・完了報告の前** には、必ず `swiftlint` を実行して規約チェックを行い、違反がある場合は即座に修正してください。常に「0 violations」の状態を維持することを絶対条件とします。
+- **品質管理 (CRITICAL)**
+- **テストの優先**: 機能追加やロジック変更の際は、必ずそれを検証するテストコード（Swift Testing / ViewInspector等）を作成してください。
+- **継続的検証**: 変更後およびコミット・完了報告の前には、必ず以下の2点を実行し、全てパスすることを確認してください。
+  1. `xcodebuild test` による全テストの実行。
+  2. `swiftlint` による規約チェック。常に「0 violations」の状態を維持することを絶対条件とします。
 - **ディレクトリ構成**: 以下の構成を遵守し、ファイルを適切に分類してください。
   - `Models/`: 鳥のステータス、歩数データなどの純粋なデータ構造。
   - `ViewModels/`: ビジネスロジック。
@@ -48,6 +52,6 @@
 - これにより、一日の成果を技術ブログ (`blog/YYYY-MM-DD.md`) と照らし合わせやすく、日次での進捗を明確に保つ。
 
 # Image Generation Prompt Rule
-- **基本ルール**: 画像を生成する依頼を受けた際、システム・プロンプトとして以下の英語テンプレートを必ず裏で組み立ててから生成を実行してください（アプリ内の1/3クロップ用の白背景スプライトシート形式を保つため）。
-- **ベース・プロンプト**: `8-bit pixel art, cute [COLOR] [BIRD_TYPE]. 16:9 aspect ratio, solid pure white background. Three stages of growth horizontally aligned with wide empty space between them. Left: egg. Center: baby chick. Right: adult bird. Make sure they are perfectly separated with huge gaps between each other so they do not overlap when divided into 3 equal square frames.`
+- **基本ルール**: 画像を生成する依頼を受けた際、システム・プロンプトとして以下の英語テンプレートを必ず裏で組み立ててから生成を実行してください（アプリ内の1/3クロップ表示で「はみ出し・伸び・ズレ」を完全に防ぐため）。
+- **ベース・プロンプト**: `8-bit pixel art, cute [COLOR] [BIRD_TYPE]. SQUARE (1:1) aspect ratio. SOLID PURE WHITE BACKGROUND #FFFFFF. DRAW A THIN HAIRLINE-THICK 3x3 GRID OVER THE WHOLE IMAGE USING THE COLOR #FDFAF7 (ULTRA-FAINT). PLACE THE 3 STAGES (egg, baby chick, adult) IN THE MIDDLE THREE BOXES ONLY. EACH CHARACTER MUST BE CENTERED IN ITS BOX AND NOT TOUCH THE GRID LINES. High contrast, clean pixel edges.`
 - **ランダムバリエーションの強制 (Constraint)**: `Even if the same bird type and color are requested, randomly change the pose, eye shape, body proportion slightly, or add a completely random small variation (like a ruffled head feather, different wing position, tiny blushing cheeks, or a subtle unique pattern) so EVERY generation is unique and slightly different.`
