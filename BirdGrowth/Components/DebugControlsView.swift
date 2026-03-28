@@ -1,6 +1,6 @@
 //
 //  DebugControlsView.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import SwiftUI

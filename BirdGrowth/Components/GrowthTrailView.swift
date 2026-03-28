@@ -1,6 +1,6 @@
 //
 //  GrowthTrailView.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import SwiftUI

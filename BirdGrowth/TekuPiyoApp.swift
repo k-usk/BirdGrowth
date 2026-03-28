@@ -1,6 +1,6 @@
 //
-//  BirdGrowthApp.swift
-//  BirdGrowth
+//  てくぴよApp.swift
+//  てくぴよ
 //
 //  Created by Yusuke on 2026/03/19.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct BirdGrowthApp: App {
+struct TekuPiyoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

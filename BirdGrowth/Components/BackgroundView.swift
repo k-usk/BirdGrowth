@@ -1,6 +1,6 @@
 //
 //  BackgroundView.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import SwiftUI

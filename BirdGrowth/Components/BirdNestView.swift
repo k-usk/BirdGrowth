@@ -1,6 +1,6 @@
 //
 //  BirdNestView.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import SwiftUI

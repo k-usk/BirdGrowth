@@ -1,13 +1,13 @@
-# BirdGrowth 🐣
+# てくぴよ 🐣
 [![Language](https://img.shields.io/badge/Language-Swift_6.0-orange?style=flat-square&logo=swift)](https://developer.apple.com/swift/)
 [![Platform](https://img.shields.io/badge/Platform-iOS_17.0+-blue?style=flat-square&logo=apple)](https://developer.apple.com/ios/)
 [![Build Status](https://github.com/k-usk/BirdGrowth/actions/workflows/ci.yml/badge.svg)](https://github.com/k-usk/BirdGrowth/actions)
 [![Linter](https://img.shields.io/badge/Linter-SwiftLint-yellowgreen?style=flat-square)](https://github.com/realm/SwiftLint)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-**あなたの歩みが、小さな命を育てる。**
+**てくてく、一歩。ぴよぴよ、成長。**
 
-BirdGrowthは、日々の歩数に合わせて鳥を育てる、没入型・癒やし系育成iOSアプリです。
+てくぴよは、日々の歩数に合わせて鳥を育てる、没入型・癒やし系育成iOSアプリです。
 「鳥をより愛おしく感じさせる」ことを究極の指針としてデザインされています。
 
 > [!NOTE]

@@ -1,6 +1,6 @@
 //
 //  WidgetDataManager.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import Foundation

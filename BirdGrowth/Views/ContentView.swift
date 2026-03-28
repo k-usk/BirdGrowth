@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import SwiftUI

@@ -1,6 +1,6 @@
 //
 //  BirdViewModel.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import Observation
