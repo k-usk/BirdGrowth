@@ -1,6 +1,6 @@
 //
 //  BirdViewModel.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import Observation
@@ -21,6 +21,13 @@ class BirdViewModel {
     var availableSprites: [URL] = []
     private var randomSpriteURL: URL?
     var selectedSpriteURL: URL? {
+        didSet {
+            updateWidgetData()
+        }
+    }
+
+    /// 選択されたカラーの行インデックス (0:上段, 1:中段, 2:下段)
+    var colorRowIndex: Int = 1 {
         didSet {
             updateWidgetData()
         }
@@ -92,6 +99,7 @@ class BirdViewModel {
         let urls = Bundle.main.urls(forResourcesWithExtension: "png", subdirectory: "Sprites") ?? []
         availableSprites = urls
         randomSpriteURL = urls.randomElement()
+        colorRowIndex = Int.random(in: 0...2) // カラーもランダムに決定
         updateMessageIfNeeded()
 
         // 初回起動時やリセット時にHealthKitの権限リクエストと同期を試みる
@@ -112,6 +120,7 @@ class BirdViewModel {
         steps = 0
         lastSegmentIndex = -1 // リセットして初回メッセージが出るように
         randomSpriteURL = availableSprites.randomElement()
+        colorRowIndex = Int.random(in: 0...2) // カラーを再抽選
         selectedSpriteURL = nil // 手動選択もリセット
         updateMessageIfNeeded()
     }
@@ -119,11 +128,14 @@ class BirdViewModel {
     /// ウィジェット用のデータを更新し、リロードを要求する
     private func updateWidgetData() {
         WidgetDataManager.save(
-            steps: steps,
-            birdName: currentBirdName,
-            spriteFileName: currentSpriteURL?.lastPathComponent ?? "",
-            stageIndex: stageIndex,
-            statusMessage: statusMessage
+            data: WidgetDataManager.WidgetData(
+                steps: steps,
+                birdName: currentBirdName,
+                spriteFileName: currentSpriteURL?.lastPathComponent ?? "",
+                stageIndex: stageIndex,
+                colorRowIndex: colorRowIndex,
+                statusMessage: statusMessage
+            )
         )
         WidgetCenter.shared.reloadAllTimelines()
     }

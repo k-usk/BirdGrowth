@@ -1,6 +1,6 @@
 //
 //  DebugControlsView.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import SwiftUI
@@ -10,6 +10,16 @@ struct DebugControlsView: View {
     @Bindable var viewModel: BirdViewModel
 
     var body: some View {
+        // デバッグパレット（カラー行）
+        Menu {
+            Button("上段 (Variation 1)") { viewModel.colorRowIndex = 0 }
+            Button("中段 (Standard)") { viewModel.colorRowIndex = 1 }
+            Button("下段 (Variation 2)") { viewModel.colorRowIndex = 2 }
+        } label: {
+            Image(systemName: "paintpalette.fill")
+                .font(.system(size: 22))
+        }
+
         HStack(spacing: 30) {
             // 画像セレクター
             Menu {

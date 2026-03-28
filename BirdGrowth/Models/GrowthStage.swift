@@ -1,6 +1,6 @@
 //
 //  GrowthStage.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 /// 鳥の成長段階を表すモデル

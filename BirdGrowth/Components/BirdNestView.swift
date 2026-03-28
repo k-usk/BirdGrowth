@@ -1,6 +1,6 @@
 //
 //  BirdNestView.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import SwiftUI
@@ -13,6 +13,7 @@ struct BirdNestView: View {
     let goalSteps: Int
     let stage: GrowthStage
     let stageIndex: Int
+    let colorRowIndex: Int
     let currentSpriteURL: URL?
 
     private let frameSize: CGFloat = 300
@@ -49,6 +50,10 @@ struct BirdNestView: View {
                             if stageIndex == 0 { return baseOffset + fineTune } // 卵を右に
                             if stageIndex == 2 { return baseOffset - fineTune } // 成鳥を左に
                             return baseOffset
+                        }(), y: {
+                            // 3x3グリッドの行選択（0:上段, 1:中段, 2:下段）
+                            // 初期位置が中央（中段）なので、上段は +frameSize, 下段は -frameSize オフセット
+                            return frameSize * CGFloat(1 - colorRowIndex)
                         }())
                 } else {
                     Image(systemName: "bird.fill")
@@ -97,6 +102,7 @@ struct BirdNestView: View {
         goalSteps: 10000,
         stage: stage,
         stageIndex: 1,
+        colorRowIndex: 1,
         currentSpriteURL: nil
     )
     .padding()

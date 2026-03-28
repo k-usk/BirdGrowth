@@ -1,6 +1,6 @@
 //
 //  HealthKitManager.swift
-//  BirdGrowth
+//  てくぴよ
 //
 
 import Foundation
