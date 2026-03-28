@@ -33,6 +33,7 @@ struct ContentView: View {
                     goalSteps: viewModel.goalSteps,
                     stage: viewModel.stage,
                     stageIndex: viewModel.stageIndex,
+                    colorRowIndex: viewModel.colorRowIndex,
                     currentSpriteURL: viewModel.currentSpriteURL
                 )
                 .padding(.horizontal, 10)

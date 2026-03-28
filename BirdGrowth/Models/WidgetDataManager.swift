@@ -19,6 +19,7 @@ struct WidgetDataManager {
         static let spriteName = "w_sprite"
         static let stageIndex = "w_stage"
         static let statusMessage = "w_msg"
+        static let colorRowIndex = "w_color"
         static let lastUpdated = "w_updated"
     }
 
@@ -27,17 +28,19 @@ struct WidgetDataManager {
         let birdName: String
         let spriteFileName: String
         let stageIndex: Int
+        let colorRowIndex: Int
         let statusMessage: String
     }
 
-    static func save(steps: Int, birdName: String, spriteFileName: String, stageIndex: Int, statusMessage: String) {
+    static func save(data: WidgetData) {
         guard let defaults = sharedDefaults else { return }
 
-        defaults.set(steps, forKey: Keys.steps)
-        defaults.set(birdName, forKey: Keys.birdName)
-        defaults.set(spriteFileName, forKey: Keys.spriteName)
-        defaults.set(stageIndex, forKey: Keys.stageIndex)
-        defaults.set(statusMessage, forKey: Keys.statusMessage)
+        defaults.set(data.steps, forKey: Keys.steps)
+        defaults.set(data.birdName, forKey: Keys.birdName)
+        defaults.set(data.spriteFileName, forKey: Keys.spriteName)
+        defaults.set(data.stageIndex, forKey: Keys.stageIndex)
+        defaults.set(data.colorRowIndex, forKey: Keys.colorRowIndex)
+        defaults.set(data.statusMessage, forKey: Keys.statusMessage)
         defaults.set(Date(), forKey: Keys.lastUpdated)
     }
 
@@ -51,6 +54,7 @@ struct WidgetDataManager {
             birdName: defaults.string(forKey: Keys.birdName) ?? "鳥さん",
             spriteFileName: defaults.string(forKey: Keys.spriteName) ?? "",
             stageIndex: defaults.integer(forKey: Keys.stageIndex),
+            colorRowIndex: defaults.integer(forKey: Keys.colorRowIndex),
             statusMessage: defaults.string(forKey: Keys.statusMessage) ?? "いっしょに歩こう！"
         )
     }
@@ -61,6 +65,7 @@ struct WidgetDataManager {
             birdName: "鳥さん",
             spriteFileName: "",
             stageIndex: 0,
+            colorRowIndex: 1, // デフォルトは中段（Yellow）
             statusMessage: "こんにちは！"
         )
     }

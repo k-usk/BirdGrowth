@@ -16,6 +16,7 @@ struct Provider: TimelineProvider {
             birdName: "BirdGrowth",
             spriteFileName: "",
             stageIndex: 0,
+            colorRowIndex: 1,
             statusMessage: "BirdGrowthへようこそ！"
         )
     }
@@ -28,6 +29,7 @@ struct Provider: TimelineProvider {
             birdName: data.birdName,
             spriteFileName: data.spriteFileName,
             stageIndex: data.stageIndex,
+            colorRowIndex: data.colorRowIndex, // カラーを追加
             statusMessage: data.statusMessage
         )
         completion(entry)
@@ -41,6 +43,7 @@ struct Provider: TimelineProvider {
             birdName: data.birdName,
             spriteFileName: data.spriteFileName,
             stageIndex: data.stageIndex,
+            colorRowIndex: data.colorRowIndex, // カラーを追加
             statusMessage: data.statusMessage
         )
 
@@ -55,6 +58,7 @@ struct BirdEntry: TimelineEntry {
     let birdName: String
     let spriteFileName: String
     let stageIndex: Int
+    let colorRowIndex: Int
     let statusMessage: String
 }
 
@@ -173,7 +177,10 @@ struct BirdWidgetEntryView: View {
                 .interpolation(.none)
                 .resizable()
                 .frame(width: size * 3, height: size * 3)
-                .offset(x: size * CGFloat(1 - entry.stageIndex))
+                .offset(
+                    x: size * CGFloat(1 - entry.stageIndex),
+                    y: size * CGFloat(1 - entry.colorRowIndex)
+                )
                 .frame(width: size, height: size)
                 .clipped()
         } else {

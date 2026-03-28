@@ -25,6 +25,7 @@ struct BirdNestViewTests {
             goalSteps: 10000,
             stage: .egg,
             stageIndex: 0,
+            colorRowIndex: 1,
             currentSpriteURL: nil
         )
         
@@ -43,6 +44,7 @@ struct BirdNestViewTests {
             goalSteps: 10000,
             stage: .egg,
             stageIndex: 0,
+            colorRowIndex: 1,
             currentSpriteURL: nil
         )
         
