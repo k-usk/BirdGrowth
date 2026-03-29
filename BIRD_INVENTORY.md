@@ -60,3 +60,4 @@
 | 48 | `魂を宿すドロドロ#1.png` | ドロドロ | EarthyBrown / ClayOchre / MudGrey | 泥遊び、チョコ色の小鳥 | 3x3形式（上:土茶, 中:粘土黄土, 下:泥灰） |
 | 49 | `煌めきの翼キラキラ#1.png` | キラキラ | GoldSparkle / SilverGlint / DiamondShine | スパンコール、派手 | 3x3形式（上:黄金火花, 中:銀色閃光, 下:ダイヤ輝） |
 | 50 | `境界のバグアンノウン#1.png` | アンノウン | ErrorRed / GlitchBlack / VoidGrey | 影、グリッチ、欠損 | 3x3形式（上:エラー赤, 中:グリッチ黒, 下:虚無灰） |
+| 51 | `幸運の笑みニッコリ#1.png` | ニッコリ | HeartRed / PastelPink / White | ハート模様、常時笑顔 | 3x3形式（上:ハート赤, 中:桃, 下:白） |
