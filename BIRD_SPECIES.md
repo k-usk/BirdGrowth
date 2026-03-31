@@ -58,3 +58,13 @@
 | 48 | **ドロドロ** (Dorodoro) | Gooey, melting appearance | Mismatched clay balls / Blunt | Earthy Brown / Clay |
 | 49 | **キラキラ** (Kirakira) | Sequin-like scales, flashy | Diamond glints / Polished | Silver-Gold / Deco |
 | 50 | **アンノウン** (Unknown) | Shadowy, blurry edges | Glitching artifacts / Missing beak | Error Red / Glitch |
+| 51 | **ニッコリ** (Nikkori) | Ultra-round, heart-shaped marks | Perpetual wide smile / Small dots | Heart Red / Smile |
+| 52 | **メデタイ** (Medetai) | Round, red and white pattern | Cheerful dots / Fan-shaped tail | Red & White / Celebration |
+| 53 | **ホシゾラ** (Hoshizora) | Floating, star-patterned | Star sparkles / Tiny triangle | Deep Navy / Galaxy |
+| 54 | **チュベピ** (Tubepi) | Slender neck, trumpet-like | Musical note eyes / Trumpet beak | Pastel Yellow / Melody |
+| 55 | **バニラン** (Vanillan) | Melting cream-like feathers | Soft brown dots / Tiny cone | Milk White / Sweet |
+| 56 | **フワット** (Fuwatto) | Cloud-like, extremely fluffy | Hidden in floof / Soft yellow | Pastel Pink / Marshmallow |
+| 57 | **カククク** (Kakukuku) | Blocky, retro 8-bit style | Square eyes / Rectangular beak | Cyan-Magenta / Retro |
+| 58 | **ナガレボ** (Nagalebo) | Streamlined, glowing tail | Comet-streak eyes / Sharp silver | Meteor Silver / Speed |
+| 59 | **プリンピ** (Purinpi) | Round, glossy yellow body | Brown caramel-cap / Tiny beak | Custard Yellow / Pudding |
+| 60 | **チュンタ** (Chunta) | Small, classic round sparrow | Friendly warm eyes / Small cone | Brown & Beige / Classic |
