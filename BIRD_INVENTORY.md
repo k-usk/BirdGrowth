@@ -91,3 +91,16 @@
 | 79 | `79_極光のミズタプ.png` | ミズタプ | AuroraTeal / NightBlue / Magenta | オーロラを映した水滴 | 3x3形式（上:極光緑, 中:深夜藍, 下:赤紫） |
 | 80 | `80_氷結のマグマイム.png` | マグマイム | IceBlue / CrystalWhite / Navy | 凍りついた溶岩 | 3x3形式（上:氷青, 中:水晶白, 下:濃紺） |
 | 81 | `81_満開のサボポン.png` | サボポン | FlowerPink / SageGreen / Yellow | 無数の花、春のサボテン | 3x3形式（上:花桃, 中:サボテン緑, 下:黄） |
+| 82 | `82_雷雲のクラウリ.png` | クラウリ | Grey / DarkPurple / ElectricYellow | 帯電した雲、稲妻の紋章 | 3x3形式（上:灰色, 中:濃紫, 下:電撃黄） |
+| 83 | `83_翠玉のルビナス.png` | ルビナス | MintGreen / Emerald / ForestGreen | エメラルドの瞳、新緑の輝き | 3x3形式（上:ミント緑, 中:翠玉色, 下:森緑） |
+| 84 | `84_鬼火のバケピヨ.png` | バケピヨ | Cyan / DeepBlue / Violet | 青い炎の尾、浮遊感 | 3x3形式（上:シアン, 中:深青, 下:菫） |
+| 85 | `85_向日葵のチュリピ.png` | チュリピ | SunnyYellow / Orange / Brown | ひまわりの花びら、夏の装い | 3x3形式（上:陽光黄, 中:橙, 下:茶） |
+| 86 | `86_日時計のクロノス.png` | クロノス | SandStone / Beige / SlateGrey | 影を落とす指針、石造りの質感 | 3x3形式（上:砂石色, 中:ベージュ, 下:鉄灰） |
+| 87 | `87_漆黒のパピルン.png` | パピルン | Charcoal / PitchBlack / Gold | 黒い和紙、金の切り絵 | 3x3形式（上:炭灰, 中:極黒, 下:金） |
+| 88 | `88_虹色のモフリス.png` | モフリス | PastelPink / SkyBlue / LemonYellow | 虹色のフワフワ毛、輝く瞳 | 3x3形式（上:桃, 中:空色, 下:レモン黄） |
+| 89 | `89_消防士のボルカノン.png` | ボルカノン | FireRed / Silver / Blue | 放水ノズル、赤色灯 | 3x3形式（上:消防赤, 中:銀, 下:青） |
+| 90 | `90_常夏のリーフル.png` | リーフル | JungleGreen / Teal / GoldenSand | ヤシの葉、トロピカルな翼 | 3x3形式（上:密林緑, 中:小鴨緑, 下:砂金） |
+| 91 | `91_ブラックホールのコズミン.png` | コズミン | VoidBlack / DarkPurple / Magenta | 吸い込まれるような闇、極光 | 3x3形式（上:虚無黒, 中:深紫, 下:紅紫） |
+| 92 | `92_癒しのベルル.png` | ベルル | CrystalWhite / Silver / PastelBlue | 澄んだ音色、癒やしの光 | 3x3形式（上:水晶白, 中:銀, 下:薄青） |
+| 93 | `93_黄昏のサンサン.png` | サンサン | SunsetOrange / DeepRed / AmberGold | 夕暮れのひまわり、暖かい光 | 3x3形式（上:夕焼橙, 中:深紅, 下:琥珀金） |
+
