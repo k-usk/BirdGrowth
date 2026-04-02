@@ -83,15 +83,19 @@ struct BirdViewModelTests {
     func testBirdNameParsing() {
         let viewModel = BirdViewModel()
         
-        // ダミーのURLを設定
-        let url = URL(fileURLWithPath: "/path/to/blue_parrot#1.png")
+        // 新形式: 数字_名前.png
+        let url = URL(fileURLWithPath: "/path/to/1_さすらいのホリドリ.png")
         viewModel.selectedSpriteURL = url
+        #expect(viewModel.currentBirdName == "さすらいのホリドリ")
         
-        #expect(viewModel.currentBirdName == "blue parrot")
-        
-        let urlWithSpaces = URL(fileURLWithPath: "/path/to/Red_Robin.png")
+        let urlWithSpaces = URL(fileURLWithPath: "/path/to/42_Blue_Parrot.png")
         viewModel.selectedSpriteURL = urlWithSpaces
-        #expect(viewModel.currentBirdName == "Red Robin")
+        #expect(viewModel.currentBirdName == "Blue Parrot")
+
+        // 旧形式との互換性（#1 が含まれていても除去されること）
+        let urlOld = URL(fileURLWithPath: "/path/to/blue_parrot#1.png")
+        viewModel.selectedSpriteURL = urlOld
+        #expect(viewModel.currentBirdName == "blue parrot")
     }
 
     // MARK: - リセット機能のテスト
