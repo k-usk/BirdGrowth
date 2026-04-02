@@ -58,7 +58,9 @@ class BirdViewModel {
             .deletingPathExtension()
             .lastPathComponent else { return "???" }
         // 冒頭の「数字_」を削除
-        let trimmedName = name.replacingOccurrences(of: #"^\d+_"#, with: "", options: .regularExpression)
+        let trimmedName = name.replacingOccurrences(of: #"^\d+_"#,
+                                                    with: "",
+                                                    options: .regularExpression)
         // 旧形式の「#」以降も念のため削除
         let baseName = trimmedName.components(separatedBy: "#").first ?? trimmedName
         return baseName.replacingOccurrences(of: "_", with: " ")
