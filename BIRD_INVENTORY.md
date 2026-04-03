@@ -91,3 +91,44 @@
 | 79 | `79_極光のミズタプ.png` | ミズタプ | AuroraTeal / NightBlue / Magenta | オーロラを映した水滴 | 3x3形式（上:極光緑, 中:深夜藍, 下:赤紫） |
 | 80 | `80_氷結のマグマイム.png` | マグマイム | IceBlue / CrystalWhite / Navy | 凍りついた溶岩 | 3x3形式（上:氷青, 中:水晶白, 下:濃紺） |
 | 81 | `81_満開のサボポン.png` | サボポン | FlowerPink / SageGreen / Yellow | 無数の花、春のサボテン | 3x3形式（上:花桃, 中:サボテン緑, 下:黄） |
+| 82 | `82_雷雲のクラウリ.png` | クラウリ | Grey / DarkPurple / ElectricYellow | 帯電した雲、稲妻の紋章 | 3x3形式（上:灰色, 中:濃紫, 下:電撃黄） |
+| 83 | `83_翠玉のルビナス.png` | ルビナス | MintGreen / Emerald / ForestGreen | エメラルドの瞳、新緑の輝き | 3x3形式（上:ミント緑, 中:翠玉色, 下:森緑） |
+| 84 | `84_鬼火のバケピヨ.png` | バケピヨ | Cyan / DeepBlue / Violet | 青い炎の尾、浮遊感 | 3x3形式（上:シアン, 中:深青, 下:菫） |
+| 85 | `85_向日葵のチュリピ.png` | チュリピ | SunnyYellow / Orange / Brown | ひまわりの花びら、夏の装い | 3x3形式（上:陽光黄, 中:橙, 下:茶） |
+| 86 | `86_日時計のクロノス.png` | クロノス | SandStone / Beige / SlateGrey | 影を落とす指針、石造りの質感 | 3x3形式（上:砂石色, 中:ベージュ, 下:鉄灰） |
+| 87 | `87_漆黒のパピルン.png` | パピルン | Charcoal / PitchBlack / Gold | 黒い和紙、金の切り絵 | 3x3形式（上:炭灰, 中:極黒, 下:金） |
+| 88 | `88_虹色のモフリス.png` | モフリス | PastelPink / SkyBlue / LemonYellow | 虹色のフワフワ毛、輝く瞳 | 3x3形式（上:桃, 中:空色, 下:レモン黄） |
+| 89 | `89_消防士のボルカノン.png` | ボルカノン | FireRed / Silver / Blue | 放水ノズル、赤色灯 | 3x3形式（上:消防赤, 中:銀, 下:青） |
+| 90 | `90_常夏のリーフル.png` | リーフル | JungleGreen / Teal / GoldenSand | ヤシの葉、トロピカルな翼 | 3x3形式（上:密林緑, 中:小鴨緑, 下:砂金） |
+| 91 | `91_ブラックホールのコズミン.png` | コズミン | VoidBlack / DarkPurple / Magenta | 吸い込まれるような闇、極光 | 3x3形式（上:虚無黒, 中:深紫, 下:紅紫） |
+| 92 | `92_癒しのベルル.png` | ベルル | CrystalWhite / Silver / PastelBlue | 澄んだ音色、癒やしの光 | 3x3形式（上:水晶白, 中:銀, 下:薄青） |
+| 93 | `93_黄昏のサンサン.png` | サンサン | SunsetOrange / DeepRed / AmberGold | 夕暮れのひまわり、暖かい光 | 3x3形式（上:夕焼橙, 中:深紅, 下:琥珀金） |
+| 94 | `94_サイバーネオンピ.png` | ネオンピ | NeonLime / ElectricPurple / CyberPink | サイバーパンクな発光、デジタルノイズ | 3x3形式（上:蛍光緑, 中:電撃紫, 下:蛍光桃） |
+| 95 | `95_茨の王者トゲトゲ.png` | トゲトゲ | CactusGreen / DesertGold / ThornBrown | 鋭い茨の冠、砂漠の王者 | 3x3形式（上:サボテン緑, 中:砂漠金, 下:茨茶） |
+| 96 | `96_夢色プカプカ.png` | プカプカ | Lavender / Mint / MarshmallowWhite | 夢の中を漂う、虹色のリボン | 3x3形式（上:菫, 中:薄緑, 下:白橡） |
+| 97 | `97_黄金砂のシャカシャカ.png` | シャカシャカ | GoldDust / TreasureAmber / RoyalBlue | 黄金の砂が詰まった、宝箱の輝き | 3x3形式（上:金粉, 中:琥珀, 下:皇家青） |
+| 98 | `98_真夜中のミカズキ.png` | ミカズキ | NightNavy / Silver / MoonYellow | 三日月の翼、星屑の尾 | 3x3形式（上:真夜中紺, 中:銀, 下:月黄） |
+| 99 | `99_古のタマゴノ.png` | タマゴノ | FossilGrey / AncientMoss / RelicGold | 割れた化石の殻、古代の紋様 | 3x3形式（上:化石灰, 中:古代苔, 下:遺物金） |
+| 100 | `100_迷宮のギザギザ.png` | ギザギザ | Emerald / LabyrinthGrey / DeepRose | 階段状の羽、幾何学模様 | 3x3形式（上:翠玉, 中:迷宮灰, 下:深薔薇） |
+| 101 | `101_虹色シャボンのバブルピ.png` | バブルピ | SoapRainbow / ClearBlue / IridescentWhite | 虹色のシャボン玉、弾ける輝き | 3x3形式（上:虹色白, 中:透明青, 下:乳白虹） |
+| 102 | `102_ネオン毒花のドクドク.png` | ドクドク | NeonPink / LimeGreen / DeepViolet | 蛍光色の斑点、誘惑する毒 | 3x3形式（上:蛍光桃, 中:ライム緑, 下:深紫） |
+| 103 | `103_苺クリームチョコボ.png` | チョコボ | StrawberryPink / WhiteCream / MilkChoco | 苺チョコの層、とろける甘さ | 3x3形式（上:苺桃, 中:白クリーム, 下:ミルク茶） |
+| 104 | `104_黄金骨のスケルト.png` | スケルト | RelicGold / AncientBlack / BoneWhite | 黄金の骨格、神秘的な紋様 | 3x3形式（上:遺跡金, 中:古え黒, 下:骨白） |
+| 105 | `105_極光のプリズム.png` | プリズム | AuroraTeal / PrismViolet / DiamondWhite | オーロラの屈折、鋭利な結晶 | 3x3形式（上:極光緑, 中:菫屈折, 下:ダイヤ白） |
+| 106 | `106_発光クラゲのウミウミ.png` | ウミウミ | JellyfishPink / ElectricBlue / DeepNavy | 発光する触手風の羽、深海の神秘 | 3x3形式（上:クラゲ桃, 中:電撃青, 下:深海紺） |
+| 107 | `107_万華鏡のマボロシ.png` | マボロシ | Kaleidoscope / MirrorSilver / CrystalBlue | 幾何学的な対称模様、無限の反射 | 3x3形式（上:万華鏡, 中:ミラー銀, 下:水晶青） |
+| 108 | `108_ショコラソースのドロドロ.png` | ドロドロ | CocoaBrown / GlossyBlack / CreamyTan | 濃厚なチョコソース、甘い造形 | 3x3形式（上:ココア茶, 中:光沢黒, 下:淡褐色） |
+| 109 | `109_銀色の閃光キラキラ.png` | キラキラ | FlashSilver / Platinum / ChromeBlue | 眩い銀の輝き、スターの品格 | 3x3形式（上:銀閃光, 中:白金, 下:クロム青） |
+| 110 | `110_レッドエラーのアンノウン.png` | アンノウン | ErrorRed / GlitchGrey / VoidBlack | 激しいノイズ、消失した翼 | 3x3形式（上:エラー赤, 中:ノイズ灰, 下:虚無黒） |
+| 111 | `111_虹色のニッコリ.png` | ニッコリ | Rainbow / PastelOrange / SunnyYellow | 虹色の笑顔、幸せを運ぶ | 3x3形式（上:虹色, 中:橙, 下:陽光黄） |
+| 112 | `112_黄金のメデタイ.png` | メデタイ | PureGold / RoyalRed / White | 豪華な金色の文様、お祝い事 | 3x3形式（上:純金, 中:皇家赤, 下:白） |
+| 113 | `113_オーロラのホシゾラ.png` | ホシゾラ | AuroraTeal / DeepPurple / MidnightBlue | オーロラを纏った星空、神秘的 | 3x3形式（上:極光緑, 中:深紫, 下:深夜藍） |
+| 114 | `114_情熱のチュベピ.png` | チュベピ | RoseRed / VelvetPurple / Gold | 情熱的な赤いメロディ、華やか | 3x3形式（上:薔薇赤, 中:紫, 下:金） |
+| 115 | `115_チョコミントバニラン.png` | バニラン | MintGreen / ChocoBrown / White | チョコミント味、爽やかな香り | 3x3形式（上:薄荷緑, 中:チョコ茶, 下:白） |
+| 116 | `116_夕焼けのフワット.png` | フワット | SunsetOrange / Peach / Lavender | 夕焼け雲の羽、暖かい質感 | 3x3形式（上:夕焼橙, 中:桃, 下:菫） |
+| 117 | `117_ダークモードのカククク.png` | カククク | DarkGrey / NeonGreen / CyberPurple | 深夜の電子世界、グリッチ | 3x3形式（上:濃灰, 中:蛍光緑, 下:電脳紫） |
+| 118 | `118_灼熱のナガレボ.png` | ナガレボ | FireRed / SolarOrange / Yellow | 燃え上がる彗星、熱い疾走 | 3x3形式（上:火炎赤, 中:太陽橙, 下:黄金） |
+| 119 | `119_いちごプリンピ.png` | プリンピ | StrawberryPink / MilkWhite / BerryRed | いちご味のプリン、甘酸っぱい | 3x3形式（上:苺桃, 中:乳白, 下:ベリー赤） |
+| 120 | `120_雪国のチュンタ.png` | チュンタ | PureWhite / IceBlue / SoftGrey | 雪に紛れる白スズメ、冬 of 雪国 | 3x3形式（上:純白, 中:氷青, 下:薄灰） |
+
+
