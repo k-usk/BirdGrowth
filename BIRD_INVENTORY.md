@@ -103,4 +103,11 @@
 | 91 | `91_ブラックホールのコズミン.png` | コズミン | VoidBlack / DarkPurple / Magenta | 吸い込まれるような闇、極光 | 3x3形式（上:虚無黒, 中:深紫, 下:紅紫） |
 | 92 | `92_癒しのベルル.png` | ベルル | CrystalWhite / Silver / PastelBlue | 澄んだ音色、癒やしの光 | 3x3形式（上:水晶白, 中:銀, 下:薄青） |
 | 93 | `93_黄昏のサンサン.png` | サンサン | SunsetOrange / DeepRed / AmberGold | 夕暮れのひまわり、暖かい光 | 3x3形式（上:夕焼橙, 中:深紅, 下:琥珀金） |
+| 94 | `94_サイバーネオンピ.png` | ネオンピ | NeonLime / ElectricPurple / CyberPink | サイバーパンクな発光、デジタルノイズ | 3x3形式（上:蛍光緑, 中:電撃紫, 下:蛍光桃） |
+| 95 | `95_茨の王者トゲトゲ.png` | トゲトゲ | CactusGreen / DesertGold / ThornBrown | 鋭い茨の冠、砂漠の王者 | 3x3形式（上:サボテン緑, 中:砂漠金, 下:茨茶） |
+| 96 | `96_夢色プカプカ.png` | プカプカ | Lavender / Mint / MarshmallowWhite | 夢の中を漂う、虹色のリボン | 3x3形式（上:菫, 中:薄緑, 下:白橡） |
+| 97 | `97_黄金砂のシャカシャカ.png` | シャカシャカ | GoldDust / TreasureAmber / RoyalBlue | 黄金の砂が詰まった、宝箱の輝き | 3x3形式（上:金粉, 中:琥珀, 下:皇家青） |
+| 98 | `98_真夜中のミカズキ.png` | ミカズキ | NightNavy / Silver / MoonYellow | 三日月の翼、星屑の尾 | 3x3形式（上:真夜中紺, 中:銀, 下:月黄） |
+| 99 | `99_古のタマゴノ.png` | タマゴノ | FossilGrey / AncientMoss / RelicGold | 割れた化石の殻、古代の紋様 | 3x3形式（上:化石灰, 中:古代苔, 下:遺物金） |
+| 100 | `100_迷宮のギザギザ.png` | ギザギザ | Emerald / LabyrinthGrey / DeepRose | 階段状の羽、幾何学模様 | 3x3形式（上:翠玉, 中:迷宮灰, 下:深薔薇） |
 
