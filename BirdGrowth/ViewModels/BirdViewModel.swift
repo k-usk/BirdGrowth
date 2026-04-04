@@ -25,6 +25,12 @@ class BirdViewModel {
     /// UserDefaultsに保存された「今育てている鳥」
     private(set) var currentBird: CurrentBird?
 
+    /// テスト専用：currentBird を直接セットするためのアクセサ
+    var currentBirdForTest: CurrentBird? {
+        get { currentBird }
+        set { currentBird = newValue }
+    }
+
     /// カラー行インデックス (0:上段, 1:中段, 2:下段)
     var colorRowIndex: Int {
         get { currentBird?.colorRowIndex ?? 1 }
