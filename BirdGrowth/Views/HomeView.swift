@@ -27,23 +27,16 @@ struct HomeView: View {
                     .padding(.top, 20)
 
                 // 鳥のネスト（メイン画面）
-                ZStack {
-                    if viewModel.stage == .adult {
-                        CelebrationStarsView(seed: viewModel.currentBirdName)
-                            .scaleEffect(1.2)
-                    }
-                    
-                    BirdNestView(
-                        birdName: viewModel.currentBirdName,
-                        statusMessage: viewModel.statusMessage,
-                        steps: viewModel.steps,
-                        goalSteps: viewModel.goalSteps,
-                        stage: viewModel.stage,
-                        stageIndex: viewModel.stageIndex,
-                        colorRowIndex: viewModel.colorRowIndex,
-                        currentSpriteURL: viewModel.currentSpriteURL
-                    )
-                }
+                BirdNestView(
+                    birdName: viewModel.currentBirdName,
+                    statusMessage: viewModel.statusMessage,
+                    steps: viewModel.steps,
+                    goalSteps: viewModel.goalSteps,
+                    stage: viewModel.stage,
+                    stageIndex: viewModel.stageIndex,
+                    colorRowIndex: viewModel.colorRowIndex,
+                    currentSpriteURL: viewModel.currentSpriteURL
+                )
                 .padding(.horizontal, 10)
 
                 // 達成後の導線（固定スペースを確保してレイアウトのズレを防止）

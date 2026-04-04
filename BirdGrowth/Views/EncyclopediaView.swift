@@ -34,10 +34,12 @@ struct EncyclopediaView: View {
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 20) {
                             ForEach(records) { record in
-                                BirdGridItem(record: record)
-                                    .onTapGesture {
-                                        selectedRecord = record
-                                    }
+                                Button {
+                                    selectedRecord = record
+                                } label: {
+                                    BirdGridItem(record: record)
+                                }
+                                .buttonStyle(.plain) // 余計なエフェクトを無効化
                             }
                         }
                         .padding()
