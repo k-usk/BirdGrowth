@@ -81,7 +81,9 @@ struct BirdDetailSheet: View {
                                 .font(.system(size: 14, weight: .bold, design: .rounded))
                                 .foregroundStyle(Color.brown.opacity(0.4))
 
-                            Text(formatDescription(BirdCatalogLoader.description(for: record.spriteKey) ?? "この鳥に関する記録は失われている……"))
+                            Text(formatDescription(
+                                BirdCatalogLoader.description(for: record.spriteKey) ?? "この鳥に関する記録は失われている……"
+                            ))
                                 .font(.system(size: 16, weight: .medium, design: .rounded))
                                 .foregroundStyle(Color.brown.opacity(0.8))
                                 .multilineTextAlignment(.leading)
@@ -98,9 +100,15 @@ struct BirdDetailSheet: View {
 
                         // 育成統計
                         VStack(spacing: 16) {
-                            statRow(image: "calendar", title: "一緒にいた日数", value: "\(record.totalDays)日")
-                            statRow(image: "figure.walk", title: "総歩数", value: "\(record.totalSteps)歩")
-                            statRow(image: "sparkles", title: "旅立ちの日", value: formatDate(record.graduationDate))
+                            statRow(image: "calendar",
+                                    title: "一緒にいた日数",
+                                    value: "\(record.totalDays)日")
+                            statRow(image: "figure.walk",
+                                    title: "総歩数",
+                                    value: "\(record.totalSteps)歩")
+                            statRow(image: "sparkles",
+                                    title: "旅立ちの日",
+                                    value: formatDate(record.graduationDate))
                         }
                         .padding(24)
                         .background(
