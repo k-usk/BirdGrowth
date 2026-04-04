@@ -64,3 +64,5 @@ fastlane/test_output
 # General
 .DS_Store
 
+# Xcode Test Results
+*.xcresult
