@@ -23,13 +23,14 @@ struct DebugControlsView: View {
         HStack(spacing: 30) {
             // 画像セレクター
             Menu {
-                Button("ランダム（通常）") {
-                    viewModel.selectedSpriteURL = nil
+                Button("ランダム（再抽選）") {
+                    viewModel.resetAndRandomize()
                 }
                 Divider()
                 ForEach(viewModel.availableSprites, id: \.self) { url in
-                    Button(url.deletingPathExtension().lastPathComponent) {
-                        viewModel.selectedSpriteURL = url
+                    let key = url.deletingPathExtension().lastPathComponent
+                    Button(key) {
+                        viewModel.updateSpriteKey(to: key)
                     }
                 }
             } label: {

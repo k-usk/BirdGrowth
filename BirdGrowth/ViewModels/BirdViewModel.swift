@@ -4,6 +4,7 @@
 //
 
 import Observation
+import SwiftData
 import SwiftUI
 import WidgetKit
 
@@ -15,27 +16,31 @@ class BirdViewModel {
     var steps: Int = 0 {
         didSet {
             updateMessageIfNeeded()
+            saveCurrentBird()
             updateWidgetData()
         }
     }
     var availableSprites: [URL] = []
-    private var randomSpriteURL: URL?
-    var selectedSpriteURL: URL? {
-        didSet {
+
+    /// UserDefaultsに保存された「今育てている鳥」
+    private(set) var currentBird: CurrentBird?
+
+    /// カラー行インデックス (0:上段, 1:中段, 2:下段)
+    var colorRowIndex: Int {
+        get { currentBird?.colorRowIndex ?? 1 }
+        set {
+            guard var bird = currentBird else { return }
+            bird.colorRowIndex = newValue
+            currentBird = bird
+            saveCurrentBird()
             updateWidgetData()
         }
     }
 
-    /// 選択されたカラーの行インデックス (0:上段, 1:中段, 2:下段)
-    var colorRowIndex: Int = 1 {
-        didSet {
-            updateWidgetData()
-        }
-    }
-
-    /// 現在表示しているスプライトURL（手動選択があればそれを優先）
+    /// 現在表示しているスプライトURL
     var currentSpriteURL: URL? {
-        selectedSpriteURL ?? randomSpriteURL
+        guard let key = currentBird?.spriteKey else { return nil }
+        return availableSprites.first { $0.deletingPathExtension().lastPathComponent == key }
     }
 
     private let healthKitManager = HealthKitManager.shared
@@ -99,19 +104,90 @@ class BirdViewModel {
         }
     }
 
-    /// スプライト画像を読み込み、ランダムに1体を選ぶ
+    /// スプライト画像を読み込み、永続化データがあれば復元、なければ新規作成する
     func setupSprites() {
         let urls = Bundle.main.urls(forResourcesWithExtension: "png", subdirectory: "Sprites") ?? []
         availableSprites = urls
-        randomSpriteURL = urls.randomElement()
-        colorRowIndex = Int.random(in: 0...2) // カラーもランダムに決定
+
+        // UserDefaultsから「今育てている鳥」を復元
+        if let data = UserDefaults.standard.data(forKey: .currentBirdKey),
+           let saved = try? JSONDecoder().decode(CurrentBird.self, from: data) {
+            currentBird = saved
+            steps = saved.steps
+        } else {
+            // 初回起動時：ランダムに1体を選んで新しい currentBird を生成
+            Task {
+                await startNewBird()
+            }
+        }
+
         updateMessageIfNeeded()
 
-        // 初回起動時やリセット時にHealthKitの権限リクエストと同期を試みる
+        // HealthKitの同期
         Task {
             try? await healthKitManager.requestAuthorization()
             await syncSteps()
         }
+    }
+
+    /// ランダムに新しい鳥を選び、currentBirdを初期化してUserDefaultsに保存する
+    func startNewBird() async {
+        guard let url = availableSprites.randomElement() else { return }
+        let key = url.deletingPathExtension().lastPathComponent
+        let newBird = CurrentBird(
+            spriteKey: key,
+            colorRowIndex: Int.random(in: 0...2),
+            startDate: Date(),
+            steps: 0
+        )
+        currentBird = newBird
+        steps = 0
+        lastSegmentIndex = -1
+        saveCurrentBird()
+        updateMessageIfNeeded()
+    }
+
+    /// currentBird を UserDefaults に保存する
+    private func saveCurrentBird() {
+        guard var bird = currentBird else { return }
+        bird.steps = steps
+        currentBird = bird
+        if let data = try? JSONEncoder().encode(bird) {
+            UserDefaults.standard.set(data, forKey: .currentBirdKey)
+        }
+    }
+
+    /// 現在の鳥を卒業させ、BirdRecordに記録してから新しい鳥を開始する
+    /// - Parameter context: SwiftData の ModelContext（View側から渡す）
+    @MainActor
+    func graduateBird(context: ModelContext) async {
+        guard let bird = currentBird else { return }
+
+        let now = Date()
+        let days = Calendar.current.dateComponents([.day], from: bird.startDate, to: now).day ?? 0
+        let record = BirdRecord(
+            spriteKey: bird.spriteKey,
+            colorRowIndex: bird.colorRowIndex,
+            startDate: bird.startDate,
+            graduationDate: now,
+            totalDays: max(days, 1),
+            totalSteps: steps
+        )
+        context.insert(record)
+        try? context.save()
+
+        // currentBirdをリセットして新しい鳥を開始
+        UserDefaults.standard.removeObject(forKey: .currentBirdKey)
+        await startNewBird()
+    }
+
+    /// スプライトキー（ファイル名）を更新する（デバッグ用）
+    func updateSpriteKey(to key: String) {
+        guard var bird = currentBird else { return }
+        bird.spriteKey = key
+        currentBird = bird
+        saveCurrentBird()
+        updateWidgetData()
     }
 
     /// ヘルスケアデータと歩数を同期する
@@ -120,14 +196,11 @@ class BirdViewModel {
         self.steps = healthKitManager.todaySteps
     }
 
-    /// デバッグ用：歩数をリセットし、鳥をランダムに入れ替える
+    /// デバッグ用：現在の鳥をリセットし、新しい鳥をランダムに入れ替える
     func resetAndRandomize() {
-        steps = 0
-        lastSegmentIndex = -1 // リセットして初回メッセージが出るように
-        randomSpriteURL = availableSprites.randomElement()
-        colorRowIndex = Int.random(in: 0...2) // カラーを再抽選
-        selectedSpriteURL = nil // 手動選択もリセット
-        updateMessageIfNeeded()
+        Task {
+            await startNewBird()
+        }
     }
 
     /// ウィジェット用のデータを更新し、リロードを要求する
@@ -144,4 +217,8 @@ class BirdViewModel {
         )
         WidgetCenter.shared.reloadAllTimelines()
     }
+}
+
+private extension String {
+    static let currentBirdKey = "tekupico_currentBird"
 }

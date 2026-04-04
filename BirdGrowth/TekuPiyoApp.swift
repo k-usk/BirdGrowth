@@ -5,6 +5,7 @@
 //  Created by Yusuke on 2026/03/19.
 //
 
+import SwiftData
 import SwiftUI
 
 @main
@@ -13,5 +14,6 @@ struct TekuPiyoApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: BirdRecord.self)
     }
 }
