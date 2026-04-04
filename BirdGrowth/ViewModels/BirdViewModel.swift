@@ -25,6 +25,12 @@ class BirdViewModel {
     /// UserDefaultsに保存された「今育てている鳥」
     private(set) var currentBird: CurrentBird?
 
+    /// 現在育てている鳥の図鑑説明（Lore）
+    var currentLore: String {
+        guard let key = currentBird?.spriteKey else { return "" }
+        return BirdCatalogLoader.description(for: key) ?? ""
+    }
+
     /// テスト専用：currentBird を直接セットするためのアクセサ
     var currentBirdForTest: CurrentBird? {
         get { currentBird }
@@ -111,7 +117,7 @@ class BirdViewModel {
     }
 
     /// スプライト画像を読み込み、永続化データがあれば復元、なければ新規作成する
-    func setupSprites() {
+    func setupSprites(context: ModelContext? = nil) {
         let urls = Bundle.main.urls(forResourcesWithExtension: "png", subdirectory: "Sprites") ?? []
         availableSprites = urls
 
@@ -120,10 +126,10 @@ class BirdViewModel {
            let saved = try? JSONDecoder().decode(CurrentBird.self, from: data) {
             currentBird = saved
             steps = saved.steps
-        } else {
+        } else if let context = context {
             // 初回起動時：ランダムに1体を選んで新しい currentBird を生成
             Task {
-                await startNewBird()
+                await startNewBird(context: context)
             }
         }
 
@@ -136,9 +142,23 @@ class BirdViewModel {
         }
     }
 
-    /// ランダムに新しい鳥を選び、currentBirdを初期化してUserDefaultsに保存する
-    func startNewBird() async {
-        guard let url = availableSprites.randomElement() else { return }
+    /// 未発見の鳥からランダムに新しい一羽を選び、currentBirdを初期化してUserDefaultsに保存する
+    func startNewBird(context: ModelContext) async {
+        // すでに育てた鳥のキーを取得
+        let descriptor = FetchDescriptor<BirdRecord>()
+        let records = (try? context.fetch(descriptor)) ?? []
+        let seenKeys = Set(records.map { $0.spriteKey })
+
+        // まだ育てていないスプライトを抽出
+        let candidates = availableSprites.filter { url in
+            let key = url.deletingPathExtension().lastPathComponent
+            return !seenKeys.contains(key)
+        }
+
+        // 候補がある場合はそこから抽選、なければ全開放（2周目）
+        let targetSprites = candidates.isEmpty ? availableSprites : candidates
+        guard let url = targetSprites.randomElement() else { return }
+
         let key = url.deletingPathExtension().lastPathComponent
         let newBird = CurrentBird(
             spriteKey: key,
@@ -184,7 +204,7 @@ class BirdViewModel {
 
         // currentBirdをリセットして新しい鳥を開始
         UserDefaults.standard.removeObject(forKey: .currentBirdKey)
-        await startNewBird()
+        await startNewBird(context: context)
     }
 
     /// スプライトキー（ファイル名）を更新する（デバッグ用）
@@ -203,9 +223,9 @@ class BirdViewModel {
     }
 
     /// デバッグ用：現在の鳥をリセットし、新しい鳥をランダムに入れ替える
-    func resetAndRandomize() {
+    func resetAndRandomize(context: ModelContext) {
         Task {
-            await startNewBird()
+            await startNewBird(context: context)
         }
     }
 

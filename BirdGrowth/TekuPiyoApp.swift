@@ -12,7 +12,7 @@ import SwiftUI
 struct TekuPiyoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
         }
         .modelContainer(for: BirdRecord.self)
     }

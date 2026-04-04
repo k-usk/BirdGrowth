@@ -8,6 +8,7 @@ import SwiftUI
 /// 開発・テスト用のデバッグコントロールを表示するコンポーネント
 struct DebugControlsView: View {
     @Bindable var viewModel: BirdViewModel
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         // デバッグパレット（カラー行）
@@ -24,7 +25,7 @@ struct DebugControlsView: View {
             // 画像セレクター
             Menu {
                 Button("ランダム（再抽選）") {
-                    viewModel.resetAndRandomize()
+                    viewModel.resetAndRandomize(context: modelContext)
                 }
                 Divider()
                 ForEach(viewModel.availableSprites, id: \.self) { url in
@@ -47,7 +48,7 @@ struct DebugControlsView: View {
             })
 
             // リセットボタン
-            Button(action: { viewModel.resetAndRandomize() }, label: {
+            Button(action: { viewModel.resetAndRandomize(context: modelContext) }, label: {
                 Image(systemName: "arrow.counterclockwise.circle.fill")
                     .font(.system(size: 24))
             })

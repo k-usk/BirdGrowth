@@ -4,6 +4,7 @@
 //
 
 import Testing
+import SwiftData
 import Foundation
 @testable import BirdGrowth
 
@@ -108,7 +109,12 @@ struct BirdViewModelTests {
     // MARK: - リセット機能のテスト
 
     @Test("リセット時に歩数が0になること")
-    func testReset() async {
+    func testReset() async throws {
+        // SwiftData のインメモリコンテナを作成
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: BirdRecord.self, configurations: config)
+        let context = ModelContext(container)
+        
         let viewModel = BirdViewModel()
 
         // startNewBird が動くよう avaliableSprites をセット
@@ -122,7 +128,7 @@ struct BirdViewModelTests {
         )
         viewModel.steps = 5000
 
-        viewModel.resetAndRandomize()
+        viewModel.resetAndRandomize(context: context)
         try? await Task.sleep(for: .milliseconds(200))
 
         #expect(viewModel.steps == 0)
