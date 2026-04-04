@@ -81,13 +81,13 @@ struct BirdDetailSheet: View {
                                 .font(.system(size: 14, weight: .bold, design: .rounded))
                                 .foregroundStyle(Color.brown.opacity(0.4))
 
-                            Text(BirdCatalogLoader.description(for: record.spriteKey) ?? "この鳥に関する記録は失われている……")
+                            Text(formatDescription(BirdCatalogLoader.description(for: record.spriteKey) ?? "この鳥に関する記録は失われている……"))
                                 .font(.system(size: 16, weight: .medium, design: .rounded))
                                 .foregroundStyle(Color.brown.opacity(0.8))
-                                .multilineTextAlignment(.center)
+                                .multilineTextAlignment(.leading)
                                 .lineSpacing(6)
-                                .padding(.horizontal)
-                                .fixedSize(horizontal: false, vertical: true)
+                                .padding(.horizontal, 20)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding(.vertical, 16)
                         .background(
@@ -132,6 +132,18 @@ struct BirdDetailSheet: View {
         formatter.locale = Locale(identifier: "ja_JP")
         formatter.dateStyle = .long
         return formatter.string(from: date)
+    }
+
+    private func formatDescription(_ text: String) -> String {
+        var result = ""
+        let characters = Array(text)
+        for index in 0..<characters.count {
+            result.append(characters[index])
+            if (index + 1) % 20 == 0 && index != (characters.count - 1) {
+                result.append("\n")
+            }
+        }
+        return result
     }
 }
 

@@ -46,30 +46,34 @@ struct HomeView: View {
                 }
                 .padding(.horizontal, 10)
 
-                // 達成後の導線（控えめなリンク表示）
-                if viewModel.stage == .adult {
-                    Button {
-                        Task {
-                            await viewModel.graduateBird(context: modelContext)
+                // 達成後の導線（固定スペースを確保してレイアウトのズレを防止）
+                ZStack {
+                    if viewModel.stage == .adult {
+                        Button {
+                            Task {
+                                await viewModel.graduateBird(context: modelContext)
+                            }
+                        } label: {
+                            HStack(spacing: 4) {
+                                Text("新しい卵をお迎えする")
+                                Image(systemName: "chevron.right")
+                            }
+                            .font(.system(size: 16, weight: .bold, design: .rounded))
+                            .foregroundStyle(Color.brown.opacity(0.6))
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 20)
+                            .background(Color.white.opacity(0.5))
+                            .clipShape(Capsule())
                         }
-                    } label: {
-                        HStack(spacing: 4) {
-                            Text("新しい卵をお迎えする")
-                            Image(systemName: "chevron.right")
-                        }
-                        .font(.system(size: 16, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.brown.opacity(0.6))
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 20)
-                        .background(Color.white.opacity(0.5))
-                        .clipShape(Capsule())
+                        .transition(.opacity.combined(with: .scale(scale: 0.9)))
                     }
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
+                .frame(height: 60) // ボタンの高さを予約
 
                 Spacer()
             }
         }
+        .animation(.spring(), value: viewModel.stage) // 全体の変化をスムーズに
         .contentShape(Rectangle())
         .onLongPressGesture {
             showingDebugMenu = true
@@ -91,7 +95,7 @@ struct HomeView: View {
                 }
             }
             .presentationDetents([.medium])
-            .presentationBackground(.ultraThinMaterial)
+            .presentationBackground(Color.white.opacity(0.2)) // 透過度アップ
         }
     }
 
