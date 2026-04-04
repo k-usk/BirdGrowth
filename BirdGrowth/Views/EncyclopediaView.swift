@@ -77,8 +77,8 @@ struct BirdGridItem: View {
                         .scaledToFill()
                         .scaleEffect(3) // 3x3なので3倍
                         .offset(
-                            x: -100, // 成鳥(右端)を表示
-                            y: CGFloat(1 - record.colorRowIndex) * 100 // カラー行
+                            x: -80, // 成鳥(右端)を表示
+                            y: CGFloat(1 - record.colorRowIndex) * 80 // カラー行
                         )
                         .frame(width: 80, height: 80)
                         .clipShape(RoundedRectangle(cornerRadius: 12))

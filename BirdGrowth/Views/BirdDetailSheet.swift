@@ -8,6 +8,9 @@ import SwiftUI
 struct BirdDetailSheet: View {
     let record: BirdRecord
     @Environment(\.dismiss) private var dismiss
+    @State private var selectedStageIndex: Int = 2 // デフォルトは成鳥
+    
+    private let frameSize: CGFloat = 160
 
     var body: some View {
         ZStack {
@@ -28,29 +31,39 @@ struct BirdDetailSheet: View {
                 ScrollView {
                     VStack(spacing: 32) {
                         // 大きなイラスト
-                        ZStack {
-                            Circle()
-                                .fill(Color.white)
-                                .frame(width: 200, height: 200)
-                                .shadow(color: Color.brown.opacity(0.05), radius: 10, x: 0, y: 5)
-
-                            if let url = Bundle.main.url(forResource: record.spriteKey,
-                                                         withExtension: "png",
-                                                         subdirectory: "Sprites"),
-                               let uiImage = UIImage(contentsOfFile: url.path) {
-
-                                Image(uiImage: uiImage)
-                                    .interpolation(.none)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .scaleEffect(3)
-                                    .offset(
-                                        x: -200, // 成鳥(右端)
-                                        y: CGFloat(1 - record.colorRowIndex) * 200 // カラー行
-                                    )
-                                    .frame(width: 160, height: 160)
-                                    .clipShape(Circle())
+                        VStack(spacing: 16) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 32)
+                                    .fill(Color.white)
+                                    .frame(width: 200, height: 200)
+                                    .shadow(color: Color.brown.opacity(0.05), radius: 10, x: 0, y: 5)
+                                
+                                if let url = Bundle.main.url(forResource: record.spriteKey,
+                                                             withExtension: "png",
+                                                             subdirectory: "Sprites"),
+                                   let uiImage = UIImage(contentsOfFile: url.path) {
+                                    Image(uiImage: uiImage)
+                                        .interpolation(.none)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .scaleEffect(3)
+                                        .offset(
+                                            x: CGFloat(1 - selectedStageIndex) * frameSize,
+                                            y: CGFloat(1 - record.colorRowIndex) * frameSize
+                                        )
+                                        .frame(width: frameSize, height: frameSize)
+                                        .clipShape(RoundedRectangle(cornerRadius: 24))
+                                }
                             }
+                            
+                            // イラスト切り替え Picker
+                            Picker("成長段階", selection: $selectedStageIndex) {
+                                Text("たまご").tag(0)
+                                Text("ひな").tag(1)
+                                Text("成鳥").tag(2)
+                            }
+                            .pickerStyle(.segmented)
+                            .padding(.horizontal, 40)
                         }
 
                         // 名前
@@ -69,11 +82,12 @@ struct BirdDetailSheet: View {
                                 .foregroundStyle(Color.brown.opacity(0.4))
 
                             Text(BirdCatalogLoader.description(for: record.spriteKey) ?? "この鳥に関する記録は失われている……")
-                                .font(.system(size: 18, weight: .medium, design: .rounded))
+                                .font(.system(size: 16, weight: .medium, design: .rounded))
                                 .foregroundStyle(Color.brown.opacity(0.8))
                                 .multilineTextAlignment(.center)
                                 .lineSpacing(6)
                                 .padding(.horizontal)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                         .padding(.vertical, 16)
                         .background(

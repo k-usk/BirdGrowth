@@ -27,24 +27,47 @@ struct HomeView: View {
                     .padding(.top, 20)
 
                 // 鳥のネスト（メイン画面）
-                BirdNestView(
-                    birdName: viewModel.currentBirdName,
-                    statusMessage: viewModel.statusMessage,
-                    steps: viewModel.steps,
-                    goalSteps: viewModel.goalSteps,
-                    stage: viewModel.stage,
-                    stageIndex: viewModel.stageIndex,
-                    colorRowIndex: viewModel.colorRowIndex,
-                    currentSpriteURL: viewModel.currentSpriteURL
-                )
+                ZStack {
+                    if viewModel.stage == .adult {
+                        BokehParticleView()
+                            .scaleEffect(1.2)
+                    }
+                    
+                    BirdNestView(
+                        birdName: viewModel.currentBirdName,
+                        statusMessage: viewModel.statusMessage,
+                        steps: viewModel.steps,
+                        goalSteps: viewModel.goalSteps,
+                        stage: viewModel.stage,
+                        stageIndex: viewModel.stageIndex,
+                        colorRowIndex: viewModel.colorRowIndex,
+                        currentSpriteURL: viewModel.currentSpriteURL
+                    )
+                }
                 .padding(.horizontal, 10)
 
-                Spacer()
-            }
+                // 達成後の導線（控えめなリンク表示）
+                if viewModel.stage == .adult {
+                    Button {
+                        Task {
+                            await viewModel.graduateBird(context: modelContext)
+                        }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text("新しい卵をお迎えする")
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.brown.opacity(0.6))
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 20)
+                        .background(Color.white.opacity(0.5))
+                        .clipShape(Capsule())
+                    }
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
 
-            // 成鳥（卒業）演出オーバーレイ
-            if viewModel.stage == .adult {
-                loreOverlay
+                Spacer()
             }
         }
         .contentShape(Rectangle())
@@ -68,62 +91,11 @@ struct HomeView: View {
                 }
             }
             .presentationDetents([.medium])
+            .presentationBackground(.ultraThinMaterial)
         }
     }
 
-    /// 図鑑説明文を表示するオーバーレイ
-    private var loreOverlay: some View {
-        ZStack {
-            Color.black.opacity(0.3)
-                .ignoresSafeArea()
-
-            VStack(spacing: 30) {
-                VStack(spacing: 16) {
-                    Text(viewModel.currentBirdName)
-                        .font(.system(size: 28, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.brown)
-
-                    Text(viewModel.currentLore)
-                        .font(.system(size: 18, weight: .medium, design: .rounded))
-                        .foregroundStyle(Color.brown.opacity(0.8))
-                        .multilineTextAlignment(.center)
-                        .lineSpacing(6)
-                        .padding(.horizontal)
-                }
-                .padding(32)
-                .background(
-                    RoundedRectangle(cornerRadius: 32)
-                        .fill(.ultraThinMaterial)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 32)
-                                .stroke(Color.white.opacity(0.5), lineWidth: 2)
-                        )
-                )
-                .padding(.horizontal, 24)
-
-                // 「羽ばたく」ボタン
-                Button {
-                    Task {
-                        await viewModel.graduateBird(context: modelContext)
-                    }
-                } label: {
-                    HStack(spacing: 12) {
-                        Image(systemName: "hand.thumbsup.fill") // または翼のイメージ
-                        Text("羽ばたく")
-                    }
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
-                    .padding(.vertical, 16)
-                    .padding(.horizontal, 40)
-                    .background(Color.brown)
-                    .clipShape(Capsule())
-                    .shadow(color: .brown.opacity(0.3), radius: 10, x: 0, y: 5)
-                }
-            }
-        }
-        .transition(.opacity.combined(with: .scale))
-        .animation(.spring(), value: viewModel.stage)
-    }
+    // loreOverlay は廃止
 }
 
 #Preview {
