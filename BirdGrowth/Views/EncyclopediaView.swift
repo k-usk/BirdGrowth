@@ -84,8 +84,10 @@ struct BirdGridItem: View {
                         )
                         .frame(width: 80, height: 80)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .allowsHitTesting(false) // タップ判定は ZStack に委ねる
                 }
             }
+            .contentShape(Rectangle()) // タップ判定をセルの矩形範囲にのみ制限
 
             Text(record.spriteKey.replacingOccurrences(of: #"^\d+_"#,
                                                        with: "",

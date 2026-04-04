@@ -9,7 +9,7 @@ struct BirdDetailSheet: View {
     let record: BirdRecord
     @Environment(\.dismiss) private var dismiss
     @State private var selectedStageIndex: Int = 2 // デフォルトは成鳥
-    
+
     private let frameSize: CGFloat = 160
 
     var body: some View {
@@ -37,7 +37,7 @@ struct BirdDetailSheet: View {
                                     .fill(Color.white)
                                     .frame(width: 200, height: 200)
                                     .shadow(color: Color.brown.opacity(0.05), radius: 10, x: 0, y: 5)
-                                
+
                                 if let url = Bundle.main.url(forResource: record.spriteKey,
                                                              withExtension: "png",
                                                              subdirectory: "Sprites"),
@@ -55,7 +55,7 @@ struct BirdDetailSheet: View {
                                         .clipShape(RoundedRectangle(cornerRadius: 24))
                                 }
                             }
-                            
+
                             // イラスト切り替え Picker
                             Picker("成長段階", selection: $selectedStageIndex) {
                                 Text("たまご").tag(0)
@@ -138,7 +138,7 @@ struct BirdDetailSheet: View {
         var result = ""
         var countSinceLastNewline = 0
         let characters = Array(text)
-        
+
         for index in 0..<characters.count {
             let char = characters[index]
             if char == "\n" {
@@ -146,10 +146,10 @@ struct BirdDetailSheet: View {
                 countSinceLastNewline = 0
                 continue
             }
-            
+
             result.append(char)
             countSinceLastNewline += 1
-            
+
             if countSinceLastNewline >= 20 && index != (characters.count - 1) {
                 result.append("\n")
                 countSinceLastNewline = 0
