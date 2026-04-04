@@ -8,6 +8,8 @@ import SwiftUI
 /// 開発・テスト用のデバッグコントロールを表示するコンポーネント
 struct DebugControlsView: View {
     @Bindable var viewModel: BirdViewModel
+    @Environment(\.modelContext)
+    private var modelContext
 
     var body: some View {
         // デバッグパレット（カラー行）
@@ -23,13 +25,14 @@ struct DebugControlsView: View {
         HStack(spacing: 30) {
             // 画像セレクター
             Menu {
-                Button("ランダム（通常）") {
-                    viewModel.selectedSpriteURL = nil
+                Button("ランダム（再抽選）") {
+                    viewModel.resetAndRandomize(context: modelContext)
                 }
                 Divider()
                 ForEach(viewModel.availableSprites, id: \.self) { url in
-                    Button(url.deletingPathExtension().lastPathComponent) {
-                        viewModel.selectedSpriteURL = url
+                    let key = url.deletingPathExtension().lastPathComponent
+                    Button(key) {
+                        viewModel.updateSpriteKey(to: key)
                     }
                 }
             } label: {
@@ -46,12 +49,12 @@ struct DebugControlsView: View {
             })
 
             // リセットボタン
-            Button(action: { viewModel.resetAndRandomize() }, label: {
+            Button(action: { viewModel.resetAndRandomize(context: modelContext) }, label: {
                 Image(systemName: "arrow.counterclockwise.circle.fill")
                     .font(.system(size: 24))
             })
         }
-        .foregroundStyle(Color.brown.opacity(0.15))
+        .foregroundStyle(Color.brown.opacity(0.7)) // 0.15 -> 0.7 に強化
         .padding(.bottom, 20)
     }
 }

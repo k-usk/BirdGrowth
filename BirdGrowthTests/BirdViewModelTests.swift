@@ -4,6 +4,7 @@
 //
 
 import Testing
+import SwiftData
 import Foundation
 @testable import BirdGrowth
 
@@ -63,13 +64,13 @@ struct BirdViewModelTests {
     @Test("メッセージが適切なプールから選ばれていることの確認")
     func testMessageSourcePool() {
         let viewModel = BirdViewModel()
-        
+
         // 5000-6000歩（Index 5）
         viewModel.steps = 5500
         let currentMsg = viewModel.statusMessage
         let validPool = BirdMessageBank.messages[5]
         #expect(validPool.contains(currentMsg))
-        
+
         // 10000歩以上（Index 10）
         viewModel.steps = 12000
         let adultMsg = viewModel.statusMessage
@@ -82,32 +83,76 @@ struct BirdViewModelTests {
     @Test("ファイル名からの鳥の名前抽出")
     func testBirdNameParsing() {
         let viewModel = BirdViewModel()
-        
-        // 新形式: 数字_名前.png
-        let url = URL(fileURLWithPath: "/path/to/1_さすらいのホリドリ.png")
-        viewModel.selectedSpriteURL = url
-        #expect(viewModel.currentBirdName == "さすらいのホリドリ")
-        
-        let urlWithSpaces = URL(fileURLWithPath: "/path/to/42_Blue_Parrot.png")
-        viewModel.selectedSpriteURL = urlWithSpaces
-        #expect(viewModel.currentBirdName == "Blue Parrot")
 
-        // 旧形式との互換性（#1 が含まれていても除去されること）
-        let urlOld = URL(fileURLWithPath: "/path/to/blue_parrot#1.png")
-        viewModel.selectedSpriteURL = urlOld
-        #expect(viewModel.currentBirdName == "blue parrot")
+        // currentBird と availableSprites を直接セット
+        let url1 = URL(fileURLWithPath: "/path/to/Sprites/1_さすらいのホリドリ.png")
+        viewModel.availableSprites = [url1]
+        viewModel.currentBirdForTest = CurrentBird(
+            spriteKey: "1_さすらいのホリドリ",
+            colorRowIndex: 0,
+            startDate: .now,
+            steps: 0
+        )
+        #expect(viewModel.currentBirdName == "さすらいのホリドリ")
+
+        let url2 = URL(fileURLWithPath: "/path/to/Sprites/42_Blue_Parrot.png")
+        viewModel.availableSprites = [url2]
+        viewModel.currentBirdForTest = CurrentBird(
+            spriteKey: "42_Blue_Parrot",
+            colorRowIndex: 0,
+            startDate: .now,
+            steps: 0
+        )
+        #expect(viewModel.currentBirdName == "Blue Parrot")
     }
 
     // MARK: - リセット機能のテスト
 
     @Test("リセット時に歩数が0になること")
-    func testReset() {
+    func testReset() async throws {
+        // SwiftData のインメモリコンテナを作成
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: BirdRecord.self, configurations: config)
+        let context = ModelContext(container)
+        
         let viewModel = BirdViewModel()
+
+        // startNewBird が動くよう avaliableSprites をセット
+        let url = URL(fileURLWithPath: "/Sprites/1_test.png")
+        viewModel.availableSprites = [url]
+        viewModel.currentBirdForTest = CurrentBird(
+            spriteKey: "1_test",
+            colorRowIndex: 0,
+            startDate: .now,
+            steps: 5000
+        )
         viewModel.steps = 5000
-        
-        viewModel.resetAndRandomize()
-        
+
+        viewModel.resetAndRandomize(context: context)
+        try? await Task.sleep(for: .milliseconds(200))
+
         #expect(viewModel.steps == 0)
         #expect(viewModel.stage == .egg)
+    }
+
+    // MARK: - colorRowIndex のテスト
+
+    @Test("colorRowIndex のデフォルト値は 1")
+    func testColorRowIndexDefault() {
+        let viewModel = BirdViewModel()
+        #expect(viewModel.colorRowIndex == 1)
+    }
+
+    @Test("currentBird がある場合に colorRowIndex を更新できること")
+    func testColorRowIndexUpdate() {
+        let viewModel = BirdViewModel()
+        viewModel.currentBirdForTest = CurrentBird(
+            spriteKey: "1_test",
+            colorRowIndex: 0,
+            startDate: .now,
+            steps: 0
+        )
+        viewModel.colorRowIndex = 2
+        #expect(viewModel.colorRowIndex == 2)
     }
 }

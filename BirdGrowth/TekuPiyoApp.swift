@@ -5,13 +5,15 @@
 //  Created by Yusuke on 2026/03/19.
 //
 
+import SwiftData
 import SwiftUI
 
 @main
 struct TekuPiyoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
         }
+        .modelContainer(for: BirdRecord.self)
     }
 }

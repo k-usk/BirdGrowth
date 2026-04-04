@@ -1,0 +1,11 @@
+[
+  {
+    "character" : 13,
+    "file" : "/Users/usk/Documents/BirdGrowthApp/BirdGrowth/BirdGrowth/Views/BirdDetailSheet.swift",
+    "line" : 13,
+    "reason" : "Attributes should be on their own lines in functions and types, but on the same line as variables and imports",
+    "rule_id" : "attributes",
+    "severity" : "Warning",
+    "type" : "Attributes"
+  }
+]
