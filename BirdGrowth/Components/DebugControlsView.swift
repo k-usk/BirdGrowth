@@ -8,7 +8,8 @@ import SwiftUI
 /// 開発・テスト用のデバッグコントロールを表示するコンポーネント
 struct DebugControlsView: View {
     @Bindable var viewModel: BirdViewModel
-    @Environment(\.modelContext) private var modelContext
+    @Environment(\.modelContext)
+    private var modelContext
 
     var body: some View {
         // デバッグパレット（カラー行）

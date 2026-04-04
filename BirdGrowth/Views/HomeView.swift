@@ -7,7 +7,8 @@ import SwiftUI
 
 struct HomeView: View {
     @Bindable var viewModel: BirdViewModel
-    @Environment(\.modelContext) private var modelContext
+    @Environment(\.modelContext)
+    private var modelContext
     @State private var showingDebugMenu = false
 
     var body: some View {

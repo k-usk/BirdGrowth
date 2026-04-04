@@ -1,0 +1,11 @@
+[
+  {
+    "character" : 37,
+    "file" : "/Users/usk/Documents/BirdGrowthApp/BirdGrowth/BirdGrowth/Views/BirdDetailSheet.swift",
+    "line" : 10,
+    "reason" : "Attributes with arguments or inside always_on_line_above must be on a new line instead of the same line",
+    "rule_id" : "attributes",
+    "severity" : "Warning",
+    "type" : "Attributes"
+  }
+]

@@ -3,11 +3,12 @@
 //  てくぴよ
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct EncyclopediaView: View {
-    @Query(sort: \BirdRecord.graduationDate, order: .forward) private var records: [BirdRecord]
+    @Query(sort: \BirdRecord.graduationDate, order: .forward)
+    private var records: [BirdRecord]
     @State private var selectedRecord: BirdRecord?
 
     private let columns = [
@@ -71,7 +72,6 @@ struct BirdGridItem: View {
                                              withExtension: "png",
                                              subdirectory: "Sprites"),
                    let uiImage = UIImage(contentsOfFile: url.path) {
-
                     // 3x3のスプライトシートから「成鳥」(stageIndex: 2) と「指定カラー」(colorRowIndex) を切り出す
                     Image(uiImage: uiImage)
                         .interpolation(.none)

@@ -1,0 +1,29 @@
+[
+  {
+    "character" : 37,
+    "file" : "/Users/usk/Documents/BirdGrowthApp/BirdGrowth/BirdGrowth/Views/BirdDetailSheet.swift",
+    "line" : 10,
+    "reason" : "Attributes with arguments or inside always_on_line_above must be on a new line instead of the same line",
+    "rule_id" : "attributes",
+    "severity" : "Warning",
+    "type" : "Attributes"
+  },
+  {
+    "character" : 1,
+    "file" : "/Users/usk/Documents/BirdGrowthApp/BirdGrowth/BirdGrowth/Views/BirdDetailSheet.swift",
+    "line" : 39,
+    "reason" : "Line should be 100 characters or less; currently it has 101 characters",
+    "rule_id" : "line_length",
+    "severity" : "Warning",
+    "type" : "Line Length"
+  },
+  {
+    "character" : 42,
+    "file" : "/Users/usk/Documents/BirdGrowthApp/BirdGrowth/BirdGrowth/Components/DebugControlsView.swift",
+    "line" : 11,
+    "reason" : "Attributes with arguments or inside always_on_line_above must be on a new line instead of the same line",
+    "rule_id" : "attributes",
+    "severity" : "Warning",
+    "type" : "Attributes"
+  }
+]
