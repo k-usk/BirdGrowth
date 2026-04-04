@@ -55,6 +55,8 @@ struct BirdNestView: View {
                             // 初期位置が中央（中段）なので、上段は +frameSize, 下段は -frameSize オフセット
                             return frameSize * CGFloat(1 - colorRowIndex)
                         }())
+                        .animation(nil, value: stageIndex) // 成長段階の切り替えを即時に
+                        .animation(nil, value: colorRowIndex) // カラーバリエーションの切り替えを即時に
                 } else {
                     Image(systemName: "bird.fill")
                         .font(.system(size: 60))

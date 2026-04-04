@@ -136,11 +136,23 @@ struct BirdDetailSheet: View {
 
     private func formatDescription(_ text: String) -> String {
         var result = ""
+        var countSinceLastNewline = 0
         let characters = Array(text)
+        
         for index in 0..<characters.count {
-            result.append(characters[index])
-            if (index + 1) % 20 == 0 && index != (characters.count - 1) {
+            let char = characters[index]
+            if char == "\n" {
+                result.append(char)
+                countSinceLastNewline = 0
+                continue
+            }
+            
+            result.append(char)
+            countSinceLastNewline += 1
+            
+            if countSinceLastNewline >= 20 && index != (characters.count - 1) {
                 result.append("\n")
+                countSinceLastNewline = 0
             }
         }
         return result

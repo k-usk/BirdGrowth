@@ -29,7 +29,7 @@ struct HomeView: View {
                 // 鳥のネスト（メイン画面）
                 ZStack {
                     if viewModel.stage == .adult {
-                        BokehParticleView()
+                        CelebrationStarsView(seed: viewModel.currentBirdName)
                             .scaleEffect(1.2)
                     }
                     

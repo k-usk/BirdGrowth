@@ -53,7 +53,7 @@ struct DebugControlsView: View {
                     .font(.system(size: 24))
             })
         }
-        .foregroundStyle(Color.brown.opacity(0.15))
+        .foregroundStyle(Color.brown.opacity(0.7)) // 0.15 -> 0.7 に強化
         .padding(.bottom, 20)
     }
 }
